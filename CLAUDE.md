@@ -72,12 +72,25 @@ The CLI now covers all generator types:
 - `wp quickdemo generate-reviews` — wraps `WPDCG_Woo_Generator::generate_reviews()`
 - `wp quickdemo generate-orders` — wraps `WPDCG_Woo_Generator::generate_orders()`
 
-### 6. Re-submit to WordPress.org
-Once tasks 1–5 are complete:
-1. Bump version, update readme.txt and plugin header
-2. Build a zip with the folder named `quickdemo-content-generator`
-3. Submit to WordPress.org under the slug `quickdemo-content-generator`
-4. The original submission under `demo-content-generator` was rejected — do not reuse that slug
+### 6. ~~Re-submit to WordPress.org~~ — Submitted, awaiting review ✅
+
+**Current status (as of 2026-05-24):** Plugin submitted to WordPress.org via the existing `demo-content-generator` review ticket (the only path available — WP.org blocks new submissions while one is pending). Updated zip `quickdemo-content-generator.zip` uploaded. Slug change from `demo-content-generator` → `quickdemo-content-generator` requested by email reply to `plugins@wordpress.org`.
+
+**What was done:**
+1. Security audit completed and all issues fixed (see Agent Notes below)
+2. All Plugin Check errors and warnings resolved
+3. `.gitignore` and `.distignore` created for clean distribution
+4. Plugin URI updated to `https://github.com/mosharafmanu/wp-quickdemo-content-generator`
+5. Code pushed to new GitHub repo: `https://github.com/mosharafmanu/wp-quickdemo-content-generator`
+6. Clean zip built at `/tmp/quickdemo-content-generator.zip` (excludes `.git`, `.claude/`, `CLAUDE.md`, `AI_CONTENT_GENERATION.md`, `.distignore`, `.gitignore`, report `.md` files)
+7. Zip uploaded to WordPress.org via "Upload updated plugin for review" button
+8. Slug change requested via email reply
+
+**Remaining — after WordPress.org approval:**
+- Upload screenshots to SVN `assets/` folder (not required for initial submission)
+- Once slug is updated to `quickdemo-content-generator`, the TextDomainMismatch errors in Plugin Check will resolve automatically — no code change needed
+
+**Note on TextDomainMismatch errors:** Plugin Check shows `Expected 'demo-content-generator' but got 'quickdemo-content-generator'` because WP.org's system still has the old slug assigned. The text domain in the plugin is correct. These errors disappear once WP.org updates the slug.
 
 ---
 
@@ -736,3 +749,43 @@ Added topic-based AI image generation to the Extras tab Media Images card.
 - Removed the PHP 8 union return type from `WPDCG_AI_Generator::generate_standalone_image()` so the file remains parseable under the declared PHP 7.4 requirement.
 - Preset AJAX save/delete now validates tab slugs, caps preset names at 80 bytes, rejects payloads over 20 KB, and `WPDCG_Presets` limits stored presets to 30 per tab.
 - User generation now blocks roles with `manage_options`; the admin UI filters those roles out, and the generator falls back to subscriber if such a role is submitted directly or via CLI.
+
+---
+
+### 2026-05-24 — WordPress.org submission prep: security audit, Plugin Check fixes, GitHub, zip
+
+**Security audit — all issues fixed:**
+- `do_generate()` AJAX path lacked `post_type_exists()` validation (the non-AJAX handler had it but the AJAX dispatcher called `do_generate()` directly). Moved validation into `do_generate()` so both paths share it.
+- All numeric inputs (`count`, `per_post`, `paragraph_count`, `excerpt_length`, etc.) now have server-side `max(low, min(high, value))` caps in every `do_*` method — HTML `min/max` attributes are client-side only.
+- `build_generate_message()` rewrote from string concatenation to `switch/case` to satisfy WPCS `NonSingularStringLiteralSingle/Plural` — `_n()` arguments must be string literals, not concatenated variables.
+- `class-wpdcg-cleaner.php` line 195: wrapped error string in `__()` with sprintf for translatability.
+
+**Plugin Check errors fixed:**
+- `Tested up to: 6.9` → `Tested up to: 7.0` (was an ERROR — must match current WP version).
+- Added `phpcs:disable WordPress.Security.NonceVerification.Missing` block around all private `do_*` methods — false positives, nonce IS verified in public handlers upstream.
+- Added `phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound` at top of `admin/views/admin-page.php` — false positives, file is a view template included inside a class method, variables are local scope.
+
+**New files created:**
+- `.gitignore` — excludes `.claude/` and `quickdemo-content-generator-*.md` report files from git
+- `.distignore` — WordPress.org standard; excludes `.git`, `.gitignore`, `.distignore`, `.claude`, `CLAUDE.md`, `AI_CONTENT_GENERATION.md`, and report `.md` files from distribution zip
+
+**GitHub:**
+- Old remote (`wp-demo-content-generator`) removed; new remote set to `https://github.com/mosharafmanu/wp-quickdemo-content-generator`
+- Plugin URI in plugin header updated to match
+- All changes committed and pushed; latest commit on `main`
+
+**WordPress.org submission:**
+- Cannot submit as new plugin while old `demo-content-generator` review is pending
+- Uploaded `quickdemo-content-generator.zip` via "Upload updated plugin for review" on existing ticket
+- Requested slug change from `demo-content-generator` → `quickdemo-content-generator` via email reply to `plugins@wordpress.org`
+- **Status: waiting for WordPress.org team response**
+- TextDomainMismatch errors in Plugin Check are expected and will resolve automatically once WP.org updates the slug — no code change needed
+
+**Clean zip location:** `/tmp/quickdemo-content-generator.zip` (274 KB). Rebuild command if needed:
+```bash
+cd /Applications/AMPPS/www/ClientProjects/WordPress/2026/plugins-dev/wp-content/plugins
+zip -r /tmp/quickdemo-content-generator.zip quickdemo-content-generator \
+  --exclude "*.git*" --exclude "*/CLAUDE.md" --exclude "*/AI_CONTENT_GENERATION.md" \
+  --exclude "*/.claude/*" --exclude "*/quickdemo-content-generator-*.md" \
+  --exclude "*/.distignore" --exclude "*/.gitignore"
+```
