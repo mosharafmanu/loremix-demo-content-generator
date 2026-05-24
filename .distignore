@@ -1,0 +1,13 @@
+# Files and directories excluded from the WordPress.org distribution zip.
+# Keep these in the repository for development but never ship them.
+
+.git
+.gitignore
+.distignore
+.claude
+
+CLAUDE.md
+AI_CONTENT_GENERATION.md
+
+# Plugin Check tool report files
+quickdemo-content-generator-*.md

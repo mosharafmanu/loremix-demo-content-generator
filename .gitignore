@@ -1,0 +1,5 @@
+# Claude Code project settings — dev only, not part of the plugin
+.claude/
+
+# Plugin Check tool report files
+quickdemo-content-generator-*.md
