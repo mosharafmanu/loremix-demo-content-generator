@@ -532,6 +532,7 @@ class WPDCG_Admin {
 	}
 
 	// ── Generator runners (shared by form and AJAX handlers) ─────────────────
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce verified by the public handler before dispatching to these private methods.
 
 	private function do_generate() {
 		$post_type = isset( $_POST['wpdcg_post_type'] ) ? sanitize_key( wp_unslash( $_POST['wpdcg_post_type'] ) ) : 'post';
@@ -656,6 +657,8 @@ class WPDCG_Admin {
 		) );
 	}
 
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
+
 	// ── Message builders ─────────────────────────────────────────────────────
 
 	private function build_generate_message( $result, string $type = 'item' ): string {
@@ -663,19 +666,35 @@ class WPDCG_Admin {
 			return $result->get_error_message();
 		}
 
-		$n = count( $result['created'] ?? array() );
+		$n        = count( $result['created'] ?? array() );
+		$batch_id = $result['batch_id'] ?? '';
 
-		$message = sprintf(
-			/* translators: 1: item count, 2: batch ID */
-			_n(
-				'%1$d demo ' . $type . ' created. Batch ID: %2$s',
-				'%1$d demo ' . $type . 's created. Batch ID: %2$s',
-				$n,
-				'quickdemo-content-generator'
-			),
-			$n,
-			$result['batch_id'] ?? ''
-		);
+		switch ( $type ) {
+			case 'comment':
+				/* translators: 1: number of comments created, 2: batch ID */
+				$message = sprintf( _n( '%1$d demo comment created. Batch ID: %2$s', '%1$d demo comments created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				break;
+			case 'user':
+				/* translators: 1: number of users created, 2: batch ID */
+				$message = sprintf( _n( '%1$d demo user created. Batch ID: %2$s', '%1$d demo users created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				break;
+			case 'review':
+				/* translators: 1: number of reviews created, 2: batch ID */
+				$message = sprintf( _n( '%1$d demo review created. Batch ID: %2$s', '%1$d demo reviews created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				break;
+			case 'order':
+				/* translators: 1: number of orders created, 2: batch ID */
+				$message = sprintf( _n( '%1$d demo order created. Batch ID: %2$s', '%1$d demo orders created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				break;
+			case 'image':
+				/* translators: 1: number of images created, 2: batch ID */
+				$message = sprintf( _n( '%1$d demo image created. Batch ID: %2$s', '%1$d demo images created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				break;
+			default:
+				/* translators: 1: number of items created, 2: batch ID */
+				$message = sprintf( _n( '%1$d demo item created. Batch ID: %2$s', '%1$d demo items created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				break;
+		}
 
 		if ( ! empty( $result['errors'] ) ) {
 			$message .= ' ' . implode( ' ', array_map( 'wp_strip_all_tags', $result['errors'] ) );

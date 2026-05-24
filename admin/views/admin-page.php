@@ -7,6 +7,10 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+// This file is a view template included inside WPDCG_Admin::render_page() (a class method).
+// All variables here are local to that method's scope, not global — PHPCS cannot detect this.
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+
 // ── Notice ───────────────────────────────────────────────────────────────────
 $notice_key = 'wpdcg_notice_' . get_current_user_id();
 $notice     = get_transient( $notice_key );
