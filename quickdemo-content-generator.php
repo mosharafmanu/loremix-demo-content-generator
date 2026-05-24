@@ -1,15 +1,14 @@
 <?php
 /**
- * Plugin Name: WP Demo Content Generator
- * Plugin URI:  https://github.com/mosharafmanu/wp-demo-content-generator
- * Description: Generate demo posts, pages, and custom post types — and safely delete only what was generated.
+ * Plugin Name: QuickDemo Content Generator
+ * Plugin URI:  https://github.com/mosharafmanu/wp-quickdemo-content-generator
+ * Description: Generate demo posts, products, comments, users, and WooCommerce orders — then safely delete only what was generated.
  * Version:     1.0.0
  * Author:      Mosharaf Hossain
  * Author URI:  https://mosharafmanu.com/
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: wp-demo-content-generator
- * Domain Path: /languages
+ * Text Domain: quickdemo-content-generator
  * Requires at least: 6.0
  * Requires PHP:      7.4
  */
@@ -27,7 +26,14 @@ define( 'WPDCG_BASENAME', plugin_basename( __FILE__ ) );
 
 // ─── Includes ────────────────────────────────────────────────────────────────
 require_once WPDCG_PATH . 'includes/class-wpdcg-tracker.php';
+require_once WPDCG_PATH . 'includes/class-wpdcg-presets.php';
+require_once WPDCG_PATH . 'includes/class-wpdcg-ai-generator.php';
 require_once WPDCG_PATH . 'includes/class-wpdcg-generator.php';
+require_once WPDCG_PATH . 'includes/class-wpdcg-comment-generator.php';
+require_once WPDCG_PATH . 'includes/class-wpdcg-user-generator.php';
+require_once WPDCG_PATH . 'includes/class-wpdcg-woo-generator.php';
+require_once WPDCG_PATH . 'includes/class-wpdcg-media-generator.php';
+require_once WPDCG_PATH . 'includes/class-wpdcg-menu-generator.php';
 require_once WPDCG_PATH . 'includes/class-wpdcg-cleaner.php';
 require_once WPDCG_PATH . 'includes/class-wpdcg-core.php';
 
@@ -65,4 +71,3 @@ function wpdcg_deactivate() {
 	}
 	// Intentionally left minimal — content cleanup is handled via the admin UI.
 }
-
