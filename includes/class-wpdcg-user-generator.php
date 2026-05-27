@@ -1,8 +1,8 @@
 <?php
 /**
- * User Generator for QuickDemo Content Generator.
+ * User Generator for Loremix Demo Content Generator.
  *
- * @package QuickDemo_Content_Generator
+ * @package Loremix_Demo_Content_Generator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

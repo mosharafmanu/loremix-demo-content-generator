@@ -1,4 +1,4 @@
-# QuickDemo Content Generator
+# Loremix Demo Content Generator
 
 A lightweight WordPress plugin to quickly fill a site with demo posts, pages, products, comments, users, and WooCommerce orders — and cleanly remove them when you are done.
 
@@ -43,17 +43,17 @@ A lightweight WordPress plugin to quickly fill a site with demo posts, pages, pr
 
 1. Clone or download this repository into your `wp-content/plugins/` directory:
    ```bash
-   git clone https://github.com/mosharafmanu/quickdemo-content-generator.git
+   git clone https://github.com/mosharafmanu/loremix-demo-content-generator.git
    ```
 2. Log in to your WordPress admin.
 3. Go to **Plugins → Installed Plugins**.
-4. Find **QuickDemo Content Generator** and click **Activate**.
+4. Find **Loremix Demo Content Generator** and click **Activate**.
 
 ---
 
 ## Usage
 
-Go to **QuickDemo** in the WordPress admin menu. Its submenu links open Posts & Pages, Comments, Users, and WooCommerce directly.
+Go to **Loremix** in the WordPress admin menu. Its submenu links open Posts & Pages, Comments, Users, and WooCommerce directly.
 
 To use AI content, configure an AI provider under **Settings → Connectors**, then enable **AI Content** while generating posts or products and enter the client topic. AI images can be slower than text generation; for best reliability, generate one or two AI images per run or use the built-in placeholder image option as a fallback.
 

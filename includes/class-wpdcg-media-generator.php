@@ -1,12 +1,12 @@
 <?php
 /**
- * Standalone media attachment generator for QuickDemo Content Generator.
+ * Standalone media attachment generator for Loremix Demo Content Generator.
  *
  * Generates placeholder GD images directly to the WordPress Media Library
  * without attaching them to any specific post. Useful for building up a
  * realistic-looking media library for frontend development.
  *
- * @package QuickDemo_Content_Generator
+ * @package Loremix_Demo_Content_Generator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -42,7 +42,7 @@ class WPDCG_Media_Generator {
 		if ( ! $use_ai && ! function_exists( 'imagecreatetruecolor' ) ) {
 			return array(
 				'created'  => array(),
-				'errors'   => array( __( 'PHP GD extension is not available and AI image generation is not configured. Cannot generate images.', 'quickdemo-content-generator' ) ),
+				'errors'   => array( __( 'PHP GD extension is not available and AI image generation is not configured. Cannot generate images.', 'loremix-demo-content-generator' ) ),
 				'batch_id' => '',
 			);
 		}
@@ -52,7 +52,7 @@ class WPDCG_Media_Generator {
 
 		for ( $i = 1; $i <= $count; $i++ ) {
 			/* translators: %02d: zero-padded image index */
-			$title = sprintf( __( 'QuickDemo Image %02d', 'quickdemo-content-generator' ), $i );
+			$title = sprintf( __( 'Loremix Image %02d', 'loremix-demo-content-generator' ), $i );
 
 			if ( $use_ai ) {
 				$attachment_id = $ai_generator->generate_standalone_image( $ai_topic, $title, $i, $batch_id );
@@ -65,7 +65,7 @@ class WPDCG_Media_Generator {
 						$attachment_id = $gd_generator->generate_standalone_image( $title, $i, $batch_id );
 						if ( false === $attachment_id ) {
 							/* translators: %d: image index */
-							$errors[] = sprintf( __( 'Could not generate image %d.', 'quickdemo-content-generator' ), $i );
+							$errors[] = sprintf( __( 'Could not generate image %d.', 'loremix-demo-content-generator' ), $i );
 							continue;
 						}
 					} else {
@@ -77,7 +77,7 @@ class WPDCG_Media_Generator {
 				$attachment_id = $gd_generator->generate_standalone_image( $title, $i, $batch_id );
 				if ( false === $attachment_id ) {
 					/* translators: %d: image index */
-					$errors[] = sprintf( __( 'Could not generate image %d.', 'quickdemo-content-generator' ), $i );
+					$errors[] = sprintf( __( 'Could not generate image %d.', 'loremix-demo-content-generator' ), $i );
 					continue;
 				}
 			}

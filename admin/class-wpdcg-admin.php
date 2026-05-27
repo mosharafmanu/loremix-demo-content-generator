@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin class for QuickDemo Content Generator.
+ * Admin class for Loremix Demo Content Generator.
  *
  * Handles all WordPress admin interactions:
  * - Registering the admin menu page
@@ -10,7 +10,7 @@
  * - Passing transient notices back to the view
  * - Enqueueing admin assets
  *
- * @package QuickDemo_Content_Generator
+ * @package Loremix_Demo_Content_Generator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,7 +26,7 @@ class WPDCG_Admin {
 	const CAPABILITY = 'manage_options';
 
 	/** @var string Admin menu/page slug. */
-	const MENU_SLUG = 'quickdemo-content-generator';
+	const MENU_SLUG = 'loremix-demo-content-generator';
 
 	/** @var int Maximum preset payload size in bytes. */
 	const MAX_PRESET_PAYLOAD_BYTES = 20000;
@@ -63,7 +63,7 @@ class WPDCG_Admin {
 	}
 
 	/**
-	 * Adds a "QuickDemo" link to the plugin row on the Plugins page.
+	 * Adds a "Loremix" link to the plugin row on the Plugins page.
 	 *
 	 * @param string[] $links Existing action links.
 	 * @return string[]
@@ -72,7 +72,7 @@ class WPDCG_Admin {
 		$settings_link = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( $this->page_url() ),
-			esc_html__( 'QuickDemo', 'quickdemo-content-generator' )
+			esc_html__( 'Loremix', 'loremix-demo-content-generator' )
 		);
 		array_unshift( $links, $settings_link );
 		return $links;
@@ -83,8 +83,8 @@ class WPDCG_Admin {
 	 */
 	public function register_menu() {
 		add_menu_page(
-			__( 'QuickDemo Content Generator', 'quickdemo-content-generator' ),
-			__( 'QuickDemo', 'quickdemo-content-generator' ),
+			__( 'Loremix Demo Content Generator', 'loremix-demo-content-generator' ),
+			__( 'Loremix', 'loremix-demo-content-generator' ),
 			self::CAPABILITY,
 			self::MENU_SLUG,
 			array( $this, 'render_page' ),
@@ -94,8 +94,8 @@ class WPDCG_Admin {
 
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Generate Posts & Pages', 'quickdemo-content-generator' ),
-			__( 'Posts & Pages', 'quickdemo-content-generator' ),
+			__( 'Generate Posts & Pages', 'loremix-demo-content-generator' ),
+			__( 'Posts & Pages', 'loremix-demo-content-generator' ),
 			self::CAPABILITY,
 			self::MENU_SLUG,
 			array( $this, 'render_page' )
@@ -103,8 +103,8 @@ class WPDCG_Admin {
 
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Generate Comments', 'quickdemo-content-generator' ),
-			__( 'Comments', 'quickdemo-content-generator' ),
+			__( 'Generate Comments', 'loremix-demo-content-generator' ),
+			__( 'Comments', 'loremix-demo-content-generator' ),
 			self::CAPABILITY,
 			self::MENU_SLUG . '&tab=comments',
 			array( $this, 'render_page' )
@@ -112,8 +112,8 @@ class WPDCG_Admin {
 
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Generate Users', 'quickdemo-content-generator' ),
-			__( 'Users', 'quickdemo-content-generator' ),
+			__( 'Generate Users', 'loremix-demo-content-generator' ),
+			__( 'Users', 'loremix-demo-content-generator' ),
 			self::CAPABILITY,
 			self::MENU_SLUG . '&tab=users',
 			array( $this, 'render_page' )
@@ -121,8 +121,8 @@ class WPDCG_Admin {
 
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Generate WooCommerce Data', 'quickdemo-content-generator' ),
-			__( 'WooCommerce', 'quickdemo-content-generator' ),
+			__( 'Generate WooCommerce Data', 'loremix-demo-content-generator' ),
+			__( 'WooCommerce', 'loremix-demo-content-generator' ),
 			self::CAPABILITY,
 			self::MENU_SLUG . '&tab=woocommerce',
 			array( $this, 'render_page' )
@@ -130,8 +130,8 @@ class WPDCG_Admin {
 
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Extras', 'quickdemo-content-generator' ),
-			__( 'Extras', 'quickdemo-content-generator' ),
+			__( 'Extras', 'loremix-demo-content-generator' ),
+			__( 'Extras', 'loremix-demo-content-generator' ),
 			self::CAPABILITY,
 			self::MENU_SLUG . '&tab=extras',
 			array( $this, 'render_page' )
@@ -175,13 +175,13 @@ class WPDCG_Admin {
 				'presetNonce'        => wp_create_nonce( 'wpdcg_preset_action' ),
 				'activeTab'          => $active_tab,
 				'presets'            => class_exists( 'WPDCG_Presets' ) ? WPDCG_Presets::get_for_tab( $active_tab ) : array(),
-				'confirmBatchDelete' => __( 'Are you sure you want to permanently delete this batch of demo content?', 'quickdemo-content-generator' ),
-				'confirmPresetDelete' => __( 'Delete this preset?', 'quickdemo-content-generator' ),
-				'generating'         => __( 'Generating…', 'quickdemo-content-generator' ),
-				'generateText'       => __( 'Generate Demo Content', 'quickdemo-content-generator' ),
-				'savePreset'         => __( 'Preset name:', 'quickdemo-content-generator' ),
-				'saved'              => __( 'Saved', 'quickdemo-content-generator' ),
-				'errorText'          => __( 'An error occurred. Please try again.', 'quickdemo-content-generator' ),
+				'confirmBatchDelete' => __( 'Are you sure you want to permanently delete this batch of demo content?', 'loremix-demo-content-generator' ),
+				'confirmPresetDelete' => __( 'Delete this preset?', 'loremix-demo-content-generator' ),
+				'generating'         => __( 'Generating…', 'loremix-demo-content-generator' ),
+				'generateText'       => __( 'Generate Demo Content', 'loremix-demo-content-generator' ),
+				'savePreset'         => __( 'Preset name:', 'loremix-demo-content-generator' ),
+				'saved'              => __( 'Saved', 'loremix-demo-content-generator' ),
+				'errorText'          => __( 'An error occurred. Please try again.', 'loremix-demo-content-generator' ),
 			)
 		);
 	}
@@ -191,7 +191,7 @@ class WPDCG_Admin {
 	 */
 	public function render_page() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'You do not have permission to access this page.', 'quickdemo-content-generator' ) );
+			wp_die( esc_html__( 'You do not have permission to access this page.', 'loremix-demo-content-generator' ) );
 		}
 		require_once WPDCG_PATH . 'admin/views/admin-page.php';
 	}
@@ -206,7 +206,7 @@ class WPDCG_Admin {
 	 */
 	public function handle_ajax_generate(): void {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'quickdemo-content-generator' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'loremix-demo-content-generator' ) ) );
 		}
 
 		check_ajax_referer( 'wpdcg_ajax_generate', 'wpdcg_ajax_nonce' );
@@ -257,7 +257,7 @@ class WPDCG_Admin {
 				break;
 
 			default:
-				wp_send_json_error( array( 'message' => __( 'Unknown action.', 'quickdemo-content-generator' ) ) );
+				wp_send_json_error( array( 'message' => __( 'Unknown action.', 'loremix-demo-content-generator' ) ) );
 		}
 
 		if ( is_wp_error( $result ) ) {
@@ -280,7 +280,7 @@ class WPDCG_Admin {
 
 	public function handle_preset_save(): void {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'quickdemo-content-generator' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'loremix-demo-content-generator' ) ) );
 		}
 		check_ajax_referer( 'wpdcg_preset_action', 'preset_nonce' );
 
@@ -288,21 +288,21 @@ class WPDCG_Admin {
 		$tab  = isset( $_POST['preset_tab'] )  ? sanitize_key( wp_unslash( $_POST['preset_tab'] ) )          : '';
 
 		if ( '' === $name || '' === $tab ) {
-			wp_send_json_error( array( 'message' => __( 'Preset name and tab are required.', 'quickdemo-content-generator' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Preset name and tab are required.', 'loremix-demo-content-generator' ) ) );
 		}
 
 		if ( strlen( $name ) > self::MAX_PRESET_NAME_LENGTH || ! WPDCG_Presets::is_valid_tab( $tab ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid preset name or tab.', 'quickdemo-content-generator' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid preset name or tab.', 'loremix-demo-content-generator' ) ) );
 		}
 
 		$raw  = isset( $_POST['preset_data'] ) ? wp_unslash( $_POST['preset_data'] ) : '{}'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( strlen( $raw ) > self::MAX_PRESET_PAYLOAD_BYTES ) {
-			wp_send_json_error( array( 'message' => __( 'Preset data is too large.', 'quickdemo-content-generator' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Preset data is too large.', 'loremix-demo-content-generator' ) ) );
 		}
 
 		$data = json_decode( $raw, true );
 		if ( ! is_array( $data ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid preset data.', 'quickdemo-content-generator' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid preset data.', 'loremix-demo-content-generator' ) ) );
 		}
 
 		// Sanitize each key/value.
@@ -319,7 +319,7 @@ class WPDCG_Admin {
 
 	public function handle_preset_delete(): void {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'quickdemo-content-generator' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'loremix-demo-content-generator' ) ) );
 		}
 		check_ajax_referer( 'wpdcg_preset_action', 'preset_nonce' );
 
@@ -327,7 +327,7 @@ class WPDCG_Admin {
 		$tab  = isset( $_POST['preset_tab'] )  ? sanitize_key( wp_unslash( $_POST['preset_tab'] ) )          : '';
 
 		if ( '' === $name || strlen( $name ) > self::MAX_PRESET_NAME_LENGTH || ! WPDCG_Presets::is_valid_tab( $tab ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid preset name or tab.', 'quickdemo-content-generator' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid preset name or tab.', 'loremix-demo-content-generator' ) ) );
 		}
 
 		WPDCG_Presets::delete_preset( $name, $tab );
@@ -338,14 +338,14 @@ class WPDCG_Admin {
 
 	public function handle_generate() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'Unauthorized.', 'quickdemo-content-generator' ) );
+			wp_die( esc_html__( 'Unauthorized.', 'loremix-demo-content-generator' ) );
 		}
 		check_admin_referer( 'wpdcg_generate', 'wpdcg_generate_nonce' );
 
 		$post_type = isset( $_POST['wpdcg_post_type'] ) ? sanitize_key( wp_unslash( $_POST['wpdcg_post_type'] ) ) : 'post';
 
 		if ( ! post_type_exists( $post_type ) ) {
-			$this->set_notice( 'error', __( 'Invalid post type selected.', 'quickdemo-content-generator' ) );
+			$this->set_notice( 'error', __( 'Invalid post type selected.', 'loremix-demo-content-generator' ) );
 			wp_safe_redirect( $this->page_url() ); exit;
 		}
 
@@ -353,7 +353,7 @@ class WPDCG_Admin {
 		$ai_topic   = isset( $_POST['wpdcg_ai_topic'] ) ? sanitize_text_field( wp_unslash( $_POST['wpdcg_ai_topic'] ) ) : '';
 
 		if ( $ai_enabled && '' === $ai_topic ) {
-			$this->set_notice( 'error', __( 'Client topic is required when AI Content is enabled.', 'quickdemo-content-generator' ) );
+			$this->set_notice( 'error', __( 'Client topic is required when AI Content is enabled.', 'loremix-demo-content-generator' ) );
 			wp_safe_redirect( $this->page_url( 'product' === $post_type ? 'woocommerce' : 'posts' ) ); exit;
 		}
 
@@ -372,7 +372,7 @@ class WPDCG_Admin {
 
 	public function handle_generate_comments() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'Unauthorized.', 'quickdemo-content-generator' ) );
+			wp_die( esc_html__( 'Unauthorized.', 'loremix-demo-content-generator' ) );
 		}
 		check_admin_referer( 'wpdcg_generate_comments', 'wpdcg_generate_comments_nonce' );
 
@@ -390,7 +390,7 @@ class WPDCG_Admin {
 
 	public function handle_generate_users() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'Unauthorized.', 'quickdemo-content-generator' ) );
+			wp_die( esc_html__( 'Unauthorized.', 'loremix-demo-content-generator' ) );
 		}
 		check_admin_referer( 'wpdcg_generate_users', 'wpdcg_generate_users_nonce' );
 
@@ -408,7 +408,7 @@ class WPDCG_Admin {
 
 	public function handle_generate_woo_reviews() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'Unauthorized.', 'quickdemo-content-generator' ) );
+			wp_die( esc_html__( 'Unauthorized.', 'loremix-demo-content-generator' ) );
 		}
 		check_admin_referer( 'wpdcg_generate_woo_reviews', 'wpdcg_generate_woo_reviews_nonce' );
 
@@ -426,7 +426,7 @@ class WPDCG_Admin {
 
 	public function handle_generate_woo_orders() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'Unauthorized.', 'quickdemo-content-generator' ) );
+			wp_die( esc_html__( 'Unauthorized.', 'loremix-demo-content-generator' ) );
 		}
 		check_admin_referer( 'wpdcg_generate_woo_orders', 'wpdcg_generate_woo_orders_nonce' );
 
@@ -444,7 +444,7 @@ class WPDCG_Admin {
 
 	public function handle_generate_media() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'Unauthorized.', 'quickdemo-content-generator' ) );
+			wp_die( esc_html__( 'Unauthorized.', 'loremix-demo-content-generator' ) );
 		}
 		check_admin_referer( 'wpdcg_generate_media', 'wpdcg_generate_media_nonce' );
 
@@ -461,7 +461,7 @@ class WPDCG_Admin {
 
 	public function handle_generate_menu() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'Unauthorized.', 'quickdemo-content-generator' ) );
+			wp_die( esc_html__( 'Unauthorized.', 'loremix-demo-content-generator' ) );
 		}
 		check_admin_referer( 'wpdcg_generate_menu', 'wpdcg_generate_menu_nonce' );
 
@@ -475,12 +475,12 @@ class WPDCG_Admin {
 
 	public function handle_delete() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'Unauthorized.', 'quickdemo-content-generator' ) );
+			wp_die( esc_html__( 'Unauthorized.', 'loremix-demo-content-generator' ) );
 		}
 		check_admin_referer( 'wpdcg_delete', 'wpdcg_delete_nonce' );
 
 		if ( empty( $_POST['wpdcg_confirm_delete'] ) ) {
-			$this->set_notice( 'warning', __( 'Please check the confirmation checkbox before deleting demo content.', 'quickdemo-content-generator' ) );
+			$this->set_notice( 'warning', __( 'Please check the confirmation checkbox before deleting demo content.', 'loremix-demo-content-generator' ) );
 			wp_safe_redirect( $this->page_url() );
 			exit;
 		}
@@ -492,7 +492,7 @@ class WPDCG_Admin {
 			'success',
 			sprintf(
 				/* translators: %d: number of items deleted */
-				_n( '%d demo item permanently deleted.', '%d demo items permanently deleted.', $deleted, 'quickdemo-content-generator' ),
+				_n( '%d demo item permanently deleted.', '%d demo items permanently deleted.', $deleted, 'loremix-demo-content-generator' ),
 				$deleted
 			)
 		);
@@ -503,14 +503,14 @@ class WPDCG_Admin {
 
 	public function handle_delete_batch() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'Unauthorized.', 'quickdemo-content-generator' ) );
+			wp_die( esc_html__( 'Unauthorized.', 'loremix-demo-content-generator' ) );
 		}
 		check_admin_referer( 'wpdcg_delete_batch', 'wpdcg_delete_batch_nonce' );
 
 		$batch_id = isset( $_POST['wpdcg_batch_id'] ) ? sanitize_key( wp_unslash( $_POST['wpdcg_batch_id'] ) ) : '';
 
 		if ( ! $batch_id ) {
-			$this->set_notice( 'error', __( 'Invalid batch ID.', 'quickdemo-content-generator' ) );
+			$this->set_notice( 'error', __( 'Invalid batch ID.', 'loremix-demo-content-generator' ) );
 			wp_safe_redirect( $this->page_url() );
 			exit;
 		}
@@ -522,7 +522,7 @@ class WPDCG_Admin {
 			'success',
 			sprintf(
 				/* translators: %d: number of items deleted */
-				_n( '%d demo item from this batch permanently deleted.', '%d demo items from this batch permanently deleted.', $deleted, 'quickdemo-content-generator' ),
+				_n( '%d demo item from this batch permanently deleted.', '%d demo items from this batch permanently deleted.', $deleted, 'loremix-demo-content-generator' ),
 				$deleted
 			)
 		);
@@ -538,7 +538,7 @@ class WPDCG_Admin {
 		$post_type = isset( $_POST['wpdcg_post_type'] ) ? sanitize_key( wp_unslash( $_POST['wpdcg_post_type'] ) ) : 'post';
 
 		if ( ! post_type_exists( $post_type ) ) {
-			return new WP_Error( 'invalid_post_type', __( 'Invalid post type.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'invalid_post_type', __( 'Invalid post type.', 'loremix-demo-content-generator' ) );
 		}
 
 		$count           = max( 1, min( WPDCG_Generator::MAX_COUNT, isset( $_POST['wpdcg_count'] )           ? absint( $_POST['wpdcg_count'] )           : 5 ) );
@@ -672,27 +672,27 @@ class WPDCG_Admin {
 		switch ( $type ) {
 			case 'comment':
 				/* translators: 1: number of comments created, 2: batch ID */
-				$message = sprintf( _n( '%1$d demo comment created. Batch ID: %2$s', '%1$d demo comments created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				$message = sprintf( _n( '%1$d demo comment created. Batch ID: %2$s', '%1$d demo comments created. Batch ID: %2$s', $n, 'loremix-demo-content-generator' ), $n, $batch_id );
 				break;
 			case 'user':
 				/* translators: 1: number of users created, 2: batch ID */
-				$message = sprintf( _n( '%1$d demo user created. Batch ID: %2$s', '%1$d demo users created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				$message = sprintf( _n( '%1$d demo user created. Batch ID: %2$s', '%1$d demo users created. Batch ID: %2$s', $n, 'loremix-demo-content-generator' ), $n, $batch_id );
 				break;
 			case 'review':
 				/* translators: 1: number of reviews created, 2: batch ID */
-				$message = sprintf( _n( '%1$d demo review created. Batch ID: %2$s', '%1$d demo reviews created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				$message = sprintf( _n( '%1$d demo review created. Batch ID: %2$s', '%1$d demo reviews created. Batch ID: %2$s', $n, 'loremix-demo-content-generator' ), $n, $batch_id );
 				break;
 			case 'order':
 				/* translators: 1: number of orders created, 2: batch ID */
-				$message = sprintf( _n( '%1$d demo order created. Batch ID: %2$s', '%1$d demo orders created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				$message = sprintf( _n( '%1$d demo order created. Batch ID: %2$s', '%1$d demo orders created. Batch ID: %2$s', $n, 'loremix-demo-content-generator' ), $n, $batch_id );
 				break;
 			case 'image':
 				/* translators: 1: number of images created, 2: batch ID */
-				$message = sprintf( _n( '%1$d demo image created. Batch ID: %2$s', '%1$d demo images created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				$message = sprintf( _n( '%1$d demo image created. Batch ID: %2$s', '%1$d demo images created. Batch ID: %2$s', $n, 'loremix-demo-content-generator' ), $n, $batch_id );
 				break;
 			default:
 				/* translators: 1: number of items created, 2: batch ID */
-				$message = sprintf( _n( '%1$d demo item created. Batch ID: %2$s', '%1$d demo items created. Batch ID: %2$s', $n, 'quickdemo-content-generator' ), $n, $batch_id );
+				$message = sprintf( _n( '%1$d demo item created. Batch ID: %2$s', '%1$d demo items created. Batch ID: %2$s', $n, 'loremix-demo-content-generator' ), $n, $batch_id );
 				break;
 		}
 
@@ -714,7 +714,7 @@ class WPDCG_Admin {
 
 		return sprintf(
 			/* translators: 1: menu name, 2: batch ID */
-			__( 'Nav menu "%1$s" created. Batch ID: %2$s', 'quickdemo-content-generator' ),
+			__( 'Nav menu "%1$s" created. Batch ID: %2$s', 'loremix-demo-content-generator' ),
 			$result['menu_name'] ?? '',
 			$result['batch_id']  ?? ''
 		);

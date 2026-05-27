@@ -1,4 +1,4 @@
-=== QuickDemo Content Generator ===
+=== Loremix Demo Content Generator ===
 Contributors: mosharafmanu
 Tags: demo content, dummy content, test data, woocommerce, content generator
 Requires at least: 6.0
@@ -12,7 +12,7 @@ Generate demo posts, products, comments, users, and WooCommerce orders — then 
 
 == Description ==
 
-QuickDemo Content Generator is a developer and agency tool for populating a WordPress site with realistic demo content in seconds. It covers every major content type in one place and cleans up after itself without ever touching your real content.
+Loremix Demo Content Generator is a developer and agency tool for populating a WordPress site with realistic demo content in seconds. It covers every major content type in one place and cleans up after itself without ever touching your real content.
 
 **What it generates:**
 
@@ -46,7 +46,7 @@ QuickDemo Content Generator is a developer and agency tool for populating a Word
 
 Every item created by this plugin is stamped with a private meta flag and a batch identifier. When you delete, only those flagged items are removed — your real site content is never touched. You can delete everything at once, or remove individual batches one at a time.
 
-Release-safety hardening includes nonce and capability checks, QuickDemo-specific cleanup markers, capped preset storage, validated AI image files, and no generated users with full site-management permissions.
+Release-safety hardening includes nonce and capability checks, Loremix-specific cleanup markers, capped preset storage, validated AI image files, and no generated users with full site-management permissions.
 
 **Batch management:**
 
@@ -56,17 +56,17 @@ Every generation run is recorded as a batch with its content type, item count, a
 
 Power users and CI/CD pipelines can manage demo content from the command line:
 
-    wp quickdemo generate --count=20 --post_type=post --status=draft
-    wp quickdemo generate --count=10 --featured-image --date-from=2024-01-01 --date-to=2024-12-31
-    wp quickdemo generate --post_type=product --product-type=variable --count=3
-    wp quickdemo generate --count=5 --ai-topic="family dental clinic in Austin" --ai-image
-    wp quickdemo generate-comments --per-post=5
-    wp quickdemo generate-users --count=10 --role=author
-    wp quickdemo generate-reviews --per-product=4
-    wp quickdemo generate-orders --count=10 --status=processing
-    wp quickdemo list
-    wp quickdemo delete --batch=batch_20240101_120000_abc123
-    wp quickdemo delete --all
+    wp loremix generate --count=20 --post_type=post --status=draft
+    wp loremix generate --count=10 --featured-image --date-from=2024-01-01 --date-to=2024-12-31
+    wp loremix generate --post_type=product --product-type=variable --count=3
+    wp loremix generate --count=5 --ai-topic="family dental clinic in Austin" --ai-image
+    wp loremix generate-comments --per-post=5
+    wp loremix generate-users --count=10 --role=author
+    wp loremix generate-reviews --per-product=4
+    wp loremix generate-orders --count=10 --status=processing
+    wp loremix list
+    wp loremix delete --batch=batch_20240101_120000_abc123
+    wp loremix delete --all
 
 **Who it is for:**
 
@@ -79,7 +79,7 @@ Power users and CI/CD pipelines can manage demo content from the command line:
 
 1. Upload the plugin folder to the `/wp-content/plugins/` directory, or install directly from the WordPress plugin screen.
 2. Activate the plugin through the **Plugins** menu in WordPress.
-3. Open **QuickDemo** from the WordPress admin menu to start generating content. The submenu links jump directly to Posts & Pages, Comments, Users, or WooCommerce.
+3. Open **Loremix** from the WordPress admin menu to start generating content. The submenu links jump directly to Posts & Pages, Comments, Users, or WooCommerce.
 
 == Frequently Asked Questions ==
 
@@ -117,15 +117,15 @@ Yes. The Generated Batches table on the admin page shows every generation run. C
 
 = Does it support WP-CLI? =
 
-Yes. The plugin registers a `wp quickdemo` command with subcommands for generating posts, comments, users, WooCommerce reviews, WooCommerce orders, listing batches, and deleting generated content. Run `wp help quickdemo` for full usage.
+Yes. The plugin registers a `wp loremix` command with subcommands for generating posts, comments, users, WooCommerce reviews, WooCommerce orders, listing batches, and deleting generated content. Run `wp help loremix` for full usage.
 
 = Can it generate content for a specific client topic? =
 
-Yes. Configure an AI provider under **Settings → Connectors**, then enable **AI Content** on the Posts or WooCommerce product generator. Enter the client topic, audience, and tone before generating. If the connector supports image generation, QuickDemo can also create topic-based featured images and product images. AI image generation can be slower than text generation, so generating one or two AI images per run is recommended.
+Yes. Configure an AI provider under **Settings → Connectors**, then enable **AI Content** on the Posts or WooCommerce product generator. Enter the client topic, audience, and tone before generating. If the connector supports image generation, Loremix can also create topic-based featured images and product images. AI image generation can be slower than text generation, so generating one or two AI images per run is recommended.
 
 = Is the generated content translatable? =
 
-All plugin interface strings are translation-ready and use the `quickdemo-content-generator` text domain.
+All plugin interface strings are translation-ready and use the `loremix-demo-content-generator` text domain.
 
 == Screenshots ==
 

@@ -1,11 +1,11 @@
 <?php
 /**
- * Core class for QuickDemo Content Generator.
+ * Core class for Loremix Demo Content Generator.
  *
  * Bootstraps the plugin: instantiates dependencies and registers all hooks.
  * Uses the singleton pattern to ensure only one instance is ever created.
  *
- * @package QuickDemo_Content_Generator
+ * @package Loremix_Demo_Content_Generator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -67,7 +67,7 @@ class WPDCG_Core {
 		}
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			WP_CLI::add_command( 'quickdemo', 'WPDCG_CLI' );
+			WP_CLI::add_command( 'loremix', 'WPDCG_CLI' );
 		}
 	}
 

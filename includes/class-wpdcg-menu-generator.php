@@ -1,12 +1,12 @@
 <?php
 /**
- * Navigation menu generator for QuickDemo Content Generator.
+ * Navigation menu generator for Loremix Demo Content Generator.
  *
  * Creates a realistic demo WordPress navigation menu with custom-URL items
  * and optional nested child items. Menus are tracked so they can be
  * individually or bulk-deleted later.
  *
- * @package QuickDemo_Content_Generator
+ * @package Loremix_Demo_Content_Generator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

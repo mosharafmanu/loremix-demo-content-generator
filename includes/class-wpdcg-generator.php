@@ -1,12 +1,12 @@
 <?php
 /**
- * Generator class for QuickDemo Content Generator.
+ * Generator class for Loremix Demo Content Generator.
  *
  * Creates demo posts, pages, and CPT entries via wp_insert_post().
  * Every item is stamped with the `_wpdcg_generated` post meta flag and
  * its ID is recorded in WPDCG_Tracker so it can be safely removed later.
  *
- * @package QuickDemo_Content_Generator
+ * @package Loremix_Demo_Content_Generator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -36,7 +36,7 @@ class WPDCG_Generator {
 	/**
 	 * Value stored in SOURCE_META_KEY for content created by this plugin.
 	 */
-	const SOURCE_VALUE = 'quickdemo-content-generator';
+	const SOURCE_VALUE = 'loremix-demo-content-generator';
 
 	/**
 	 * Term meta key used to flag auto-generated taxonomy terms.
@@ -218,7 +218,7 @@ class WPDCG_Generator {
 				'wpdcg_invalid_post_type',
 				sprintf(
 					/* translators: %s: post type slug */
-					__( 'Post type "%s" does not exist.', 'quickdemo-content-generator' ),
+					__( 'Post type "%s" does not exist.', 'loremix-demo-content-generator' ),
 					$post_type
 				)
 			);
@@ -254,7 +254,7 @@ class WPDCG_Generator {
 			if ( is_wp_error( $ai_result ) ) {
 				$errors[] = sprintf(
 					/* translators: %s: AI error message */
-					__( 'AI content unavailable; used built-in demo content instead. Reason: %s', 'quickdemo-content-generator' ),
+					__( 'AI content unavailable; used built-in demo content instead. Reason: %s', 'loremix-demo-content-generator' ),
 					$ai_result->get_error_message()
 				);
 			} else {
@@ -304,7 +304,7 @@ class WPDCG_Generator {
 				if ( is_wp_error( $image_result ) ) {
 					$errors[] = sprintf(
 						/* translators: %s: AI image error message */
-						__( 'AI image unavailable for "%1$s"; used built-in featured image if enabled. Reason: %2$s', 'quickdemo-content-generator' ),
+						__( 'AI image unavailable for "%1$s"; used built-in featured image if enabled. Reason: %2$s', 'loremix-demo-content-generator' ),
 						$title,
 						$image_result->get_error_message()
 					);
@@ -379,7 +379,7 @@ class WPDCG_Generator {
 
 	/**
 	 * Stamps generated posts/attachments/variations with both legacy and
-	 * QuickDemo-specific ownership markers.
+	 * Loremix-specific ownership markers.
 	 *
 	 * @param int    $post_id  Post, attachment, or variation ID.
 	 * @param string $batch_id Batch identifier.
@@ -462,7 +462,7 @@ class WPDCG_Generator {
 	private function get_sample_term_names( string $tax_slug ): array {
 		$presets = array(
 			'category'    => array( 'Technology', 'Business', 'Design', 'Development', 'Marketing' ),
-			'post_tag'    => array( 'demo', 'sample', 'tutorial', 'guide', 'quickdemo' ),
+			'post_tag'    => array( 'demo', 'sample', 'tutorial', 'guide', 'loremix' ),
 			'product_cat' => array( 'Electronics', 'Clothing', 'Home & Garden', 'Sports', 'Books', 'Beauty', 'Toys' ),
 			'product_tag' => array( 'new', 'sale', 'featured', 'bestseller', 'limited', 'eco-friendly' ),
 		);
@@ -1078,7 +1078,7 @@ class WPDCG_Generator {
 					'post_mime_type' => 'image/jpeg',
 					'post_title'     => sprintf(
 						/* translators: 1: product title, 2: gallery image number */
-						__( '%1$s Gallery Image %2$d', 'quickdemo-content-generator' ),
+						__( '%1$s Gallery Image %2$d', 'loremix-demo-content-generator' ),
 						$title,
 						$slot
 					),

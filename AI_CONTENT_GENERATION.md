@@ -1,10 +1,10 @@
-# QuickDemo AI Content Generation
+# Loremix AI Content Generation
 
-This document explains how QuickDemo's optional AI content generation works so future agents can debug or extend it without rediscovering the flow.
+This document explains how Loremix's optional AI content generation works so future agents can debug or extend it without rediscovering the flow.
 
 ## Overview
 
-QuickDemo can generate demo post/page/product titles, excerpts, body content, and optional featured/product images through the WordPress 7.0 AI Client and Connectors system.
+Loremix can generate demo post/page/product titles, excerpts, body content, and optional featured/product images through the WordPress 7.0 AI Client and Connectors system.
 
 The plugin does not store provider API keys. API keys are configured in WordPress admin under `Settings > Connectors`, which currently resolves to `wp-admin/options-connectors.php`. WordPress core passes configured connector credentials into the AI Client registry during `init`.
 
@@ -126,7 +126,7 @@ Important compatibility note: do not set `using_temperature()` on image prompts.
 No models found that support image_generation for this prompt.
 ```
 
-Image generation uses a longer per-request timeout than text generation. QuickDemo sets `RequestOptions::KEY_TIMEOUT` to `WPDCG_AI_Generator::IMAGE_TIMEOUT` seconds on image prompts only. The current value is 120 seconds. This avoids changing the global WordPress AI Client timeout while giving slow image endpoints enough time to respond.
+Image generation uses a longer per-request timeout than text generation. Loremix sets `RequestOptions::KEY_TIMEOUT` to `WPDCG_AI_Generator::IMAGE_TIMEOUT` seconds on image prompts only. The current value is 120 seconds. This avoids changing the global WordPress AI Client timeout while giving slow image endpoints enough time to respond.
 
 Current image model preferences are:
 
@@ -136,9 +136,9 @@ gpt-image-1, gpt-image-2, dall-e-3, dall-e-2, imagen-4
 
 The AI Client will use a matching preferred model when available. If no preference matches but another compatible image model is available, the underlying AI Client can still fall back to a compatible candidate.
 
-The returned image must be a `File`-like object with `getDataUri()`. QuickDemo accepts PNG, JPEG/JPG, and WebP data URIs, writes the bytes into the uploads directory, creates an attachment, copies QuickDemo tracking meta to the attachment, and sets it as the post thumbnail.
+The returned image must be a `File`-like object with `getDataUri()`. Loremix accepts PNG, JPEG/JPG, and WebP data URIs, writes the bytes into the uploads directory, creates an attachment, copies Loremix tracking meta to the attachment, and sets it as the post thumbnail.
 
-If AI image generation fails and the built-in featured image option was also checked, QuickDemo falls back to its local generated placeholder image.
+If AI image generation fails and the built-in featured image option was also checked, Loremix falls back to its local generated placeholder image.
 
 In the admin UI the placeholder image option remains visible when AI images are enabled. Its copy explains that it is used as a fallback when AI image generation fails.
 
@@ -153,7 +153,7 @@ Many `WP_AI_Client_Prompt_Builder` methods are exposed through `__call()`. Do no
 - `using_max_tokens`
 - `as_json_response`
 
-QuickDemo uses `builder_can_call()`:
+Loremix uses `builder_can_call()`:
 
 ```php
 is_object( $builder ) && ( method_exists( $builder, $method ) || is_callable( array( $builder, $method ) ) )
@@ -173,7 +173,7 @@ Likely causes:
 
 ### Text generation falls back to demo content
 
-Check the admin notice after generation. QuickDemo appends AI errors to the success notice so fallback reasons are visible.
+Check the admin notice after generation. Loremix appends AI errors to the success notice so fallback reasons are visible.
 
 Common causes:
 
@@ -192,7 +192,7 @@ Likely causes:
 
 ### Image generation times out
 
-Image generation is much slower than text generation. QuickDemo gives each image request a 120 second timeout, but generating many images in a single synchronous admin request can still be unreliable. For best results, generate 1-2 items per run with AI images enabled, or leave AI images unchecked and use the built-in placeholder featured image option.
+Image generation is much slower than text generation. Loremix gives each image request a 120 second timeout, but generating many images in a single synchronous admin request can still be unreliable. For best results, generate 1-2 items per run with AI images enabled, or leave AI images unchecked and use the built-in placeholder featured image option.
 
 ### Connectors link goes to the wrong URL
 
@@ -211,7 +211,7 @@ admin_url( 'options-general.php?page=connectors' )
 ## Verification Checklist
 
 1. Configure OpenAI or another AI provider in `Settings > Connectors`.
-2. Reload QuickDemo admin page.
+2. Reload Loremix admin page.
 3. Confirm AI Content checkbox is enabled.
 4. Generate one post/product with AI Content enabled and AI Image disabled.
 5. Confirm title/body content are topic-specific.

@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name: QuickDemo Content Generator
- * Plugin URI:  https://github.com/mosharafmanu/wp-quickdemo-content-generator
+ * Plugin Name: Loremix Demo Content Generator
+ * Plugin URI:  https://github.com/mosharafmanu/loremix-demo-content-generator
  * Description: Generate demo posts, products, comments, users, and WooCommerce orders — then safely delete only what was generated.
  * Version:     1.0.0
  * Author:      Mosharaf Hossain
  * Author URI:  https://mosharafmanu.com/
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: quickdemo-content-generator
+ * Text Domain: loremix-demo-content-generator
  * Requires at least: 6.0
  * Requires PHP:      7.4
  */

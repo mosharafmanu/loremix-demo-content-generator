@@ -1,10 +1,10 @@
 <?php
 /**
- * WooCommerce Generator for QuickDemo Content Generator.
+ * WooCommerce Generator for Loremix Demo Content Generator.
  *
  * Generates demo WooCommerce reviews and orders.
  *
- * @package QuickDemo_Content_Generator
+ * @package Loremix_Demo_Content_Generator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -107,7 +107,7 @@ class WPDCG_Woo_Generator {
 	 */
 	public function generate_reviews( array $args = array() ) {
 		if ( ! function_exists( 'wc_get_product' ) ) {
-			return new WP_Error( 'wpdcg_no_woo', __( 'WooCommerce is not active.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_no_woo', __( 'WooCommerce is not active.', 'loremix-demo-content-generator' ) );
 		}
 
 		$args = wp_parse_args(
@@ -124,7 +124,7 @@ class WPDCG_Woo_Generator {
 		if ( empty( $product_ids ) ) {
 			return new WP_Error(
 				'wpdcg_no_products',
-				__( 'No demo products found to attach reviews to. Generate some products first.', 'quickdemo-content-generator' )
+				__( 'No demo products found to attach reviews to. Generate some products first.', 'loremix-demo-content-generator' )
 			);
 		}
 
@@ -213,7 +213,7 @@ class WPDCG_Woo_Generator {
 	 */
 	public function generate_orders( array $args = array() ) {
 		if ( ! function_exists( 'wc_create_order' ) ) {
-			return new WP_Error( 'wpdcg_no_woo', __( 'WooCommerce is not active.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_no_woo', __( 'WooCommerce is not active.', 'loremix-demo-content-generator' ) );
 		}
 
 		$args = wp_parse_args(

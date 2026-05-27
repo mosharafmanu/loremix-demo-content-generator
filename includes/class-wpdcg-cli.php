@@ -1,10 +1,10 @@
 <?php
 /**
- * WP-CLI commands for QuickDemo Content Generator.
+ * WP-CLI commands for Loremix Demo Content Generator.
  *
  * Loaded only when WP-CLI is present.
  *
- * @package QuickDemo_Content_Generator
+ * @package Loremix_Demo_Content_Generator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -59,8 +59,8 @@ class WPDCG_CLI {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp quickdemo generate --count=20 --post_type=post --status=draft
-	 *     wp quickdemo generate --count=5 --featured-image --date-from=2024-01-01 --date-to=2024-12-31
+	 *     wp loremix generate --count=20 --post_type=post --status=draft
+	 *     wp loremix generate --count=5 --featured-image --date-from=2024-01-01 --date-to=2024-12-31
 	 *
 	 * @when after_wp_load
 	 *
@@ -129,8 +129,8 @@ class WPDCG_CLI {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp quickdemo generate-comments --per-post=5
-	 *     wp quickdemo generate-comments --attach-to=latest_batch --status=hold --no-threaded
+	 *     wp loremix generate-comments --per-post=5
+	 *     wp loremix generate-comments --attach-to=latest_batch --status=hold --no-threaded
 	 *
 	 * @subcommand generate-comments
 	 * @when after_wp_load
@@ -175,7 +175,7 @@ class WPDCG_CLI {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp quickdemo generate-users --count=10 --role=author
+	 *     wp loremix generate-users --count=10 --role=author
 	 *
 	 * @subcommand generate-users
 	 * @when after_wp_load
@@ -216,8 +216,8 @@ class WPDCG_CLI {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp quickdemo generate-reviews --per-product=4
-	 *     wp quickdemo generate-reviews --attach-to=latest_batch
+	 *     wp loremix generate-reviews --per-product=4
+	 *     wp loremix generate-reviews --attach-to=latest_batch
 	 *
 	 * @subcommand generate-reviews
 	 * @when after_wp_load
@@ -258,7 +258,7 @@ class WPDCG_CLI {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp quickdemo generate-orders --count=10 --status=processing
+	 *     wp loremix generate-orders --count=10 --status=processing
 	 *
 	 * @subcommand generate-orders
 	 * @when after_wp_load
@@ -316,8 +316,8 @@ class WPDCG_CLI {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp quickdemo delete --all
-	 *     wp quickdemo delete --batch=batch_20240101_120000_abc123
+	 *     wp loremix delete --all
+	 *     wp loremix delete --batch=batch_20240101_120000_abc123
 	 *
 	 * @when after_wp_load
 	 *
@@ -357,7 +357,7 @@ class WPDCG_CLI {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp quickdemo list
+	 *     wp loremix list
 	 *
 	 * @subcommand list
 	 * @when after_wp_load

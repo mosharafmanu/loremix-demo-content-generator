@@ -2,7 +2,7 @@
 /**
  * Optional WordPress AI Client powered generator.
  *
- * @package QuickDemo_Content_Generator
+ * @package Loremix_Demo_Content_Generator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -34,7 +34,7 @@ class WPDCG_AI_Generator {
 			return false;
 		}
 
-		$builder = wp_ai_client_prompt( 'QuickDemo support check.' );
+		$builder = wp_ai_client_prompt( 'Loremix support check.' );
 		return is_object( $builder )
 			&& self::builder_can_call( $builder, 'is_supported_for_text_generation' )
 			&& $builder->is_supported_for_text_generation();
@@ -48,7 +48,7 @@ class WPDCG_AI_Generator {
 			return false;
 		}
 
-		$builder = ( new self() )->apply_image_preferences( wp_ai_client_prompt( 'QuickDemo support check.' ) );
+		$builder = ( new self() )->apply_image_preferences( wp_ai_client_prompt( 'Loremix support check.' ) );
 		return is_object( $builder )
 			&& self::builder_can_call( $builder, 'is_supported_for_image_generation' )
 			&& $builder->is_supported_for_image_generation();
@@ -82,7 +82,7 @@ class WPDCG_AI_Generator {
 		if ( ! self::supports_text_generation() ) {
 			return new WP_Error(
 				'wpdcg_ai_text_unavailable',
-				__( 'No WordPress AI connector is configured for text generation.', 'quickdemo-content-generator' )
+				__( 'No WordPress AI connector is configured for text generation.', 'loremix-demo-content-generator' )
 			);
 		}
 
@@ -95,7 +95,7 @@ class WPDCG_AI_Generator {
 		$excerpt_length  = max( 12, min( absint( $args['excerpt_length'] ?? 30 ), 120 ) );
 
 		if ( '' === $topic ) {
-			return new WP_Error( 'wpdcg_ai_missing_topic', __( 'Client topic is required for AI content.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_missing_topic', __( 'Client topic is required for AI content.', 'loremix-demo-content-generator' ) );
 		}
 
 		$schema = array(
@@ -139,7 +139,7 @@ class WPDCG_AI_Generator {
 
 		$json = $this->extract_json( (string) $text );
 		if ( ! is_array( $json ) || empty( $json['items'] ) || ! is_array( $json['items'] ) ) {
-			return new WP_Error( 'wpdcg_ai_bad_response', __( 'AI response could not be parsed.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_bad_response', __( 'AI response could not be parsed.', 'loremix-demo-content-generator' ) );
 		}
 
 		$items = array();
@@ -164,7 +164,7 @@ class WPDCG_AI_Generator {
 		}
 
 		if ( empty( $items ) ) {
-			return new WP_Error( 'wpdcg_ai_empty_response', __( 'AI returned no usable content.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_empty_response', __( 'AI returned no usable content.', 'loremix-demo-content-generator' ) );
 		}
 
 		return $items;
@@ -179,7 +179,7 @@ class WPDCG_AI_Generator {
 		if ( ! self::supports_image_generation() ) {
 			return new WP_Error(
 				'wpdcg_ai_image_unavailable',
-				__( 'No WordPress AI connector is configured for image generation.', 'quickdemo-content-generator' )
+				__( 'No WordPress AI connector is configured for image generation.', 'loremix-demo-content-generator' )
 			);
 		}
 
@@ -197,7 +197,7 @@ class WPDCG_AI_Generator {
 			return $image_file;
 		}
 		if ( ! is_object( $image_file ) || ! method_exists( $image_file, 'getDataUri' ) ) {
-			return new WP_Error( 'wpdcg_ai_image_bad_response', __( 'AI image response was not usable.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_image_bad_response', __( 'AI image response was not usable.', 'loremix-demo-content-generator' ) );
 		}
 
 		return $this->save_data_uri_as_attachment( $image_file->getDataUri(), 0, $title, $index, $batch_id, false );
@@ -212,7 +212,7 @@ class WPDCG_AI_Generator {
 		if ( ! self::supports_image_generation() ) {
 			return new WP_Error(
 				'wpdcg_ai_image_unavailable',
-				__( 'No WordPress AI connector is configured for image generation.', 'quickdemo-content-generator' )
+				__( 'No WordPress AI connector is configured for image generation.', 'loremix-demo-content-generator' )
 			);
 		}
 
@@ -232,7 +232,7 @@ class WPDCG_AI_Generator {
 			return $image_file;
 		}
 		if ( ! is_object( $image_file ) || ! method_exists( $image_file, 'getDataUri' ) ) {
-			return new WP_Error( 'wpdcg_ai_image_bad_response', __( 'AI image response was not usable.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_image_bad_response', __( 'AI image response was not usable.', 'loremix-demo-content-generator' ) );
 		}
 
 		return $this->save_data_uri_as_attachment( $image_file->getDataUri(), $post_id, $title, $index, '', true );
@@ -255,7 +255,7 @@ class WPDCG_AI_Generator {
 			$post_id,
 			sprintf(
 				/* translators: 1: product title, 2: gallery image number */
-				__( '%1$s Gallery Image %2$d', 'quickdemo-content-generator' ),
+				__( '%1$s Gallery Image %2$d', 'loremix-demo-content-generator' ),
 				$title,
 				$slot
 			),
@@ -302,7 +302,7 @@ class WPDCG_AI_Generator {
 		if ( ! self::supports_image_generation() ) {
 			return new WP_Error(
 				'wpdcg_ai_image_unavailable',
-				__( 'No WordPress AI connector is configured for image generation.', 'quickdemo-content-generator' )
+				__( 'No WordPress AI connector is configured for image generation.', 'loremix-demo-content-generator' )
 			);
 		}
 
@@ -315,7 +315,7 @@ class WPDCG_AI_Generator {
 			return $image_file;
 		}
 		if ( ! is_object( $image_file ) || ! method_exists( $image_file, 'getDataUri' ) ) {
-			return new WP_Error( 'wpdcg_ai_image_bad_response', __( 'AI image response was not usable.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_image_bad_response', __( 'AI image response was not usable.', 'loremix-demo-content-generator' ) );
 		}
 
 		return $this->save_data_uri_as_attachment( $image_file->getDataUri(), $post_id, $title, $index, '', $set_thumbnail );
@@ -454,22 +454,22 @@ class WPDCG_AI_Generator {
 	 */
 	private function save_data_uri_as_attachment( string $data_uri, int $post_id, string $title, int $index, string $batch_id = '', bool $set_thumbnail = true ) {
 		if ( ! preg_match( '#^data:(image/(png|jpeg|jpg|webp));base64,(.+)$#', $data_uri, $matches ) ) {
-			return new WP_Error( 'wpdcg_ai_image_invalid_data', __( 'AI image data was not a supported image type.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_image_invalid_data', __( 'AI image data was not a supported image type.', 'loremix-demo-content-generator' ) );
 		}
 
 		$bytes = base64_decode( $matches[3], true );
 
 		if ( false === $bytes ) {
-			return new WP_Error( 'wpdcg_ai_image_decode_failed', __( 'AI image data could not be decoded.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_image_decode_failed', __( 'AI image data could not be decoded.', 'loremix-demo-content-generator' ) );
 		}
 
 		if ( strlen( $bytes ) > self::MAX_IMAGE_BYTES ) {
-			return new WP_Error( 'wpdcg_ai_image_too_large', __( 'AI image data exceeded the 10 MB safety limit.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_image_too_large', __( 'AI image data exceeded the 10 MB safety limit.', 'loremix-demo-content-generator' ) );
 		}
 
 		$image_info = @getimagesizefromstring( $bytes ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		if ( false === $image_info || empty( $image_info['mime'] ) ) {
-			return new WP_Error( 'wpdcg_ai_image_invalid_file', __( 'AI image data was not a valid image file.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_image_invalid_file', __( 'AI image data was not a valid image file.', 'loremix-demo-content-generator' ) );
 		}
 
 		$allowed_mimes = array(
@@ -479,7 +479,7 @@ class WPDCG_AI_Generator {
 		);
 		$mime          = strtolower( (string) $image_info['mime'] );
 		if ( ! isset( $allowed_mimes[ $mime ] ) ) {
-			return new WP_Error( 'wpdcg_ai_image_invalid_mime', __( 'AI image file type is not allowed.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_image_invalid_mime', __( 'AI image file type is not allowed.', 'loremix-demo-content-generator' ) );
 		}
 		$extension = $allowed_mimes[ $mime ];
 
@@ -491,12 +491,12 @@ class WPDCG_AI_Generator {
 		$slug     = $post_id > 0 ? $post_id : 'media';
 		$filename = wp_unique_filename(
 			$upload['path'],
-			sanitize_file_name( 'quickdemo-ai-' . $slug . '-' . $index . '.' . $extension )
+			sanitize_file_name( 'loremix-ai-' . $slug . '-' . $index . '.' . $extension )
 		);
 		$filepath = trailingslashit( $upload['path'] ) . $filename;
 
 		if ( false === file_put_contents( $filepath, $bytes ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
-			return new WP_Error( 'wpdcg_ai_image_write_failed', __( 'AI image could not be saved.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_image_write_failed', __( 'AI image could not be saved.', 'loremix-demo-content-generator' ) );
 		}
 
 		$file_check = wp_check_filetype_and_ext(
@@ -510,7 +510,7 @@ class WPDCG_AI_Generator {
 		);
 		if ( empty( $file_check['type'] ) || $file_check['type'] !== $mime ) {
 			wp_delete_file( $filepath );
-			return new WP_Error( 'wpdcg_ai_image_file_check_failed', __( 'AI image failed WordPress file validation.', 'quickdemo-content-generator' ) );
+			return new WP_Error( 'wpdcg_ai_image_file_check_failed', __( 'AI image failed WordPress file validation.', 'loremix-demo-content-generator' ) );
 		}
 
 		require_once ABSPATH . 'wp-admin/includes/image.php';

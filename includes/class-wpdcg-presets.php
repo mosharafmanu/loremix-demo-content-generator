@@ -1,12 +1,12 @@
 <?php
 /**
- * Presets manager for QuickDemo Content Generator.
+ * Presets manager for Loremix Demo Content Generator.
  *
  * Stores and retrieves named generation presets per tab so users can
  * save and reload their favourite generation settings without re-entering
  * them on every run.
  *
- * @package QuickDemo_Content_Generator
+ * @package Loremix_Demo_Content_Generator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

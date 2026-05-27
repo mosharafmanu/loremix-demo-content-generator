@@ -1,8 +1,8 @@
 <?php
 /**
- * Comment Generator for QuickDemo Content Generator.
+ * Comment Generator for Loremix Demo Content Generator.
  *
- * @package QuickDemo_Content_Generator
+ * @package Loremix_Demo_Content_Generator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -86,7 +86,7 @@ class WPDCG_Comment_Generator {
 		if ( empty( $post_ids ) ) {
 			return new WP_Error(
 				'wpdcg_no_posts',
-				__( 'No demo posts found to attach comments to. Generate some posts first.', 'quickdemo-content-generator' )
+				__( 'No demo posts found to attach comments to. Generate some posts first.', 'loremix-demo-content-generator' )
 			);
 		}
 

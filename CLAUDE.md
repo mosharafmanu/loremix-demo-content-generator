@@ -1,9 +1,9 @@
-# QuickDemo Content Generator — Agent Reference
+# Loremix Demo Content Generator — Agent Reference
 
-Plugin slug: `quickdemo-content-generator`  
-Text domain: `quickdemo-content-generator`  
-Main file: `quickdemo-content-generator.php`  
-Admin page: **QuickDemo** top-level admin menu (`admin.php?page=quickdemo-content-generator`) with submenu deep links for Posts & Pages, Comments, Users, WooCommerce, and Extras.
+Plugin slug: `loremix-demo-content-generator`  
+Text domain: `loremix-demo-content-generator`  
+Main file: `loremix-demo-content-generator.php`  
+Admin page: **Loremix** top-level admin menu (`admin.php?page=loremix-demo-content-generator`) with submenu deep links for Posts & Pages, Comments, Users, WooCommerce, and Extras.
 Capability required: `manage_options`
 
 ---
@@ -14,9 +14,13 @@ The plugin was originally developed as **"Demo Content Generator"** with the slu
 
 It was submitted to the WordPress.org plugin repository for review. The WordPress.org review team rejected the name because it was too generic — purely descriptive names with no distinctive element are not accepted. The team requested a rename to something unique.
 
-The plugin was renamed to **"QuickDemo Content Generator"** with slug `quickdemo-content-generator`. All internal prefixes (`wpdcg_`), class names (`WPDCG_`), and constants (`WPDCG_*`) were kept the same throughout the rename — only the user-facing name, slug, text domain, and folder changed.
+The plugin was renamed to **"QuickDemo Content Generator"** with slug `quickdemo-content-generator`. All internal prefixes (`wpdcg_`), class names (`WPDCG_`), and constants (`WPDCG_*`) were kept the same — only the user-facing name, slug, text domain, and folder changed.
 
-**If WordPress.org submission ever comes up again:** the current slug `quickdemo-content-generator` is what should be submitted. The text domain is `quickdemo-content-generator`. The review team's original concern was the generic name — "QuickDemo" addresses that.
+WP.org replied (2026-05-26) that **"QuickDemo"** was also rejected — adding a generic modifier like "Quick" does not satisfy the distinctiveness requirement.
+
+The plugin was renamed again to **"Loremix Demo Content Generator"** with slug `loremix-demo-content-generator`. "Loremix" is a coined word (lorem + mix) that has no conflicts, is clearly distinctive, and is immediately recognisable to WordPress developers as relating to placeholder/demo content. All internal prefixes remained `wpdcg_` / `WPDCG_`.
+
+**If WordPress.org submission ever comes up again:** the current slug `loremix-demo-content-generator` is what should be submitted. The text domain is `loremix-demo-content-generator`. WP-CLI command is `wp loremix`. The "Loremix" brand word at the start is the distinctive element that satisfies WP.org's naming policy.
 
 ---
 
@@ -36,12 +40,12 @@ The plugin was renamed to **"QuickDemo Content Generator"** with slug `quickdemo
 - Generation presets (save/load/delete named form state per tab, stored in `wpdcg_presets` wp_option)
 - AJAX form submission with animated progress bar (falls back to native POST on failure)
 - Batch tracking system (all content types, type-prefix routing for deletion)
-- Top-level QuickDemo admin menu with submenu deep links and tabbed UI (Posts | Comments | Users | WooCommerce | Extras)
+- Top-level Loremix admin menu with submenu deep links and tabbed UI (Posts | Comments | Users | WooCommerce | Extras)
 - WooCommerce tab uses independent accordion panels for Products, Reviews, and Orders
 - Per-batch and delete-all deletion across all content types
-- WP-CLI commands (`wp quickdemo generate`, `generate-comments`, `generate-users`, `generate-reviews`, `generate-orders`, `delete`, `list`)
+- WP-CLI commands (`wp loremix generate`, `generate-comments`, `generate-users`, `generate-reviews`, `generate-orders`, `delete`, `list`)
 - Stats bar showing separate counts per content type
-- "QuickDemo" action link on Plugins page
+- "Loremix" action link on Plugins page
 
 ---
 
@@ -50,47 +54,47 @@ The plugin was renamed to **"QuickDemo Content Generator"** with slug `quickdemo
 The implementation checklist items below are complete. The only remaining item here is the external WordPress.org re-submission process.
 
 ### 1. ~~Bump version~~ — Version set to 1.0.0 ✅
-**Decision:** Starting at 1.0.0 for the first WordPress.org public release. Internal dev version history is irrelevant to the public. Both `quickdemo-content-generator.php` (header + constant) and `readme.txt` (`Stable tag`) are set to `1.0.0`.
+**Decision:** Starting at 1.0.0 for the first WordPress.org public release. Internal dev version history is irrelevant to the public. Both `loremix-demo-content-generator.php` (header + constant) and `readme.txt` (`Stable tag`) are set to `1.0.0`.
 
 ### 2. ~~Update plugin header description~~ ✅
 Updated to: `Generate demo posts, products, comments, users, and WooCommerce orders — then safely delete only what was generated.`
 
 ### 3. ~~Rewrite readme.txt for WordPress.org~~ ✅
-Fully rewritten with correct features, tabbed UI description, WooCommerce sections, updated FAQ, updated WP-CLI examples (`wp quickdemo`), and a clean single `= 1.0.0 =` changelog entry.
+Fully rewritten with correct features, tabbed UI description, WooCommerce sections, updated FAQ, updated WP-CLI examples (`wp loremix`), and a clean single `= 1.0.0 =` changelog entry.
 
 ### 4. ~~Fix uninstall.php~~ ✅
-Now deletes all nine options: `wpdcg_version`, `wpdcg_generated_ids`, `wpdcg_batches`, `wpdcg_comment_ids`, `wpdcg_user_ids`, `wpdcg_order_ids`, `wpdcg_settings`, `wpdcg_menu_ids`, `wpdcg_presets`. Package docblock corrected to `QuickDemo_Content_Generator`.
+Now deletes all nine options: `wpdcg_version`, `wpdcg_generated_ids`, `wpdcg_batches`, `wpdcg_comment_ids`, `wpdcg_user_ids`, `wpdcg_order_ids`, `wpdcg_settings`, `wpdcg_menu_ids`, `wpdcg_presets`. Package docblock corrected to `Loremix_Content_Generator`.
 
 Note: `wpdcg_settings` is not yet written anywhere in the codebase — it is a pre-emptive delete to clean up a future plugin settings panel if one is added. Safe to leave as-is.
 
 ### 5. ~~Extend WP-CLI to cover all content types~~ ✅
 **File:** `includes/class-wpdcg-cli.php`  
 The CLI now covers all generator types:
-- `wp quickdemo generate` — wraps `WPDCG_Generator::generate()`
-- `wp quickdemo generate-comments` — wraps `WPDCG_Comment_Generator::generate()`
-- `wp quickdemo generate-users` — wraps `WPDCG_User_Generator::generate()`
-- `wp quickdemo generate-reviews` — wraps `WPDCG_Woo_Generator::generate_reviews()`
-- `wp quickdemo generate-orders` — wraps `WPDCG_Woo_Generator::generate_orders()`
+- `wp loremix generate` — wraps `WPDCG_Generator::generate()`
+- `wp loremix generate-comments` — wraps `WPDCG_Comment_Generator::generate()`
+- `wp loremix generate-users` — wraps `WPDCG_User_Generator::generate()`
+- `wp loremix generate-reviews` — wraps `WPDCG_Woo_Generator::generate_reviews()`
+- `wp loremix generate-orders` — wraps `WPDCG_Woo_Generator::generate_orders()`
 
 ### 6. ~~Re-submit to WordPress.org~~ — Submitted, awaiting review ✅
 
-**Current status (as of 2026-05-24):** Plugin submitted to WordPress.org via the existing `demo-content-generator` review ticket (the only path available — WP.org blocks new submissions while one is pending). Updated zip `quickdemo-content-generator.zip` uploaded. Slug change from `demo-content-generator` → `quickdemo-content-generator` requested by email reply to `plugins@wordpress.org`.
+**Current status (as of 2026-05-24):** Plugin submitted to WordPress.org via the existing `demo-content-generator` review ticket (the only path available — WP.org blocks new submissions while one is pending). Updated zip `loremix-demo-content-generator.zip` uploaded. Slug change from `demo-content-generator` → `loremix-demo-content-generator` requested by email reply to `plugins@wordpress.org`.
 
 **What was done:**
 1. Security audit completed and all issues fixed (see Agent Notes below)
 2. All Plugin Check errors and warnings resolved
 3. `.gitignore` and `.distignore` created for clean distribution
-4. Plugin URI updated to `https://github.com/mosharafmanu/wp-quickdemo-content-generator`
-5. Code pushed to new GitHub repo: `https://github.com/mosharafmanu/wp-quickdemo-content-generator`
-6. Clean zip built at `/tmp/quickdemo-content-generator.zip` (excludes `.git`, `.claude/`, `CLAUDE.md`, `AI_CONTENT_GENERATION.md`, `.distignore`, `.gitignore`, report `.md` files)
+4. Plugin URI updated to `https://github.com/mosharafmanu/wp-loremix-demo-content-generator`
+5. Code pushed to new GitHub repo: `https://github.com/mosharafmanu/wp-loremix-demo-content-generator`
+6. Clean zip built at `/tmp/loremix-demo-content-generator.zip` (excludes `.git`, `.claude/`, `CLAUDE.md`, `AI_CONTENT_GENERATION.md`, `.distignore`, `.gitignore`, report `.md` files)
 7. Zip uploaded to WordPress.org via "Upload updated plugin for review" button
 8. Slug change requested via email reply
 
 **Remaining — after WordPress.org approval:**
 - Upload screenshots to SVN `assets/` folder (not required for initial submission)
-- Once slug is updated to `quickdemo-content-generator`, the TextDomainMismatch errors in Plugin Check will resolve automatically — no code change needed
+- Once slug is updated to `loremix-demo-content-generator`, the TextDomainMismatch errors in Plugin Check will resolve automatically — no code change needed
 
-**Note on TextDomainMismatch errors:** Plugin Check shows `Expected 'demo-content-generator' but got 'quickdemo-content-generator'` because WP.org's system still has the old slug assigned. The text domain in the plugin is correct. These errors disappear once WP.org updates the slug.
+**Note on TextDomainMismatch errors:** Plugin Check shows `Expected 'demo-content-generator' but got 'loremix-demo-content-generator'` because WP.org's system still has the old slug assigned. The text domain in the plugin is correct. These errors disappear once WP.org updates the slug.
 
 ---
 
@@ -113,7 +117,7 @@ Every item is stamped with a meta flag and recorded in `wp_options` so it can be
 ## File Structure
 
 ```
-quickdemo-content-generator.php   Main plugin file — constants, require_once, hooks
+loremix-demo-content-generator.php   Main plugin file — constants, require_once, hooks
 uninstall.php                     Runs on plugin deletion
 
 includes/
@@ -125,7 +129,7 @@ includes/
   class-wpdcg-woo-generator.php   WooCommerce reviews + orders generator
   class-wpdcg-cleaner.php         Deletion logic for all content types
   class-wpdcg-core.php            Singleton bootstrap — loads admin + CLI
-  class-wpdcg-cli.php             WP-CLI commands (wp quickdemo generate/delete/list)
+  class-wpdcg-cli.php             WP-CLI commands (wp loremix generate/delete/list)
   class-wpdcg-presets.php         Static preset manager — named form-state snapshots per tab
   class-wpdcg-media-generator.php Standalone GD image generation to Media Library (no parent post)
   class-wpdcg-menu-generator.php  WordPress nav menu generator with realistic labels
@@ -153,7 +157,7 @@ AI_CONTENT_GENERATION.md          Agent handoff for WordPress AI Client / Connec
 | `WPDCG_FILE` | Absolute path to main plugin file |
 | `WPDCG_PATH` | Plugin directory path (trailing slash) |
 | `WPDCG_URL` | Plugin directory URL (trailing slash) |
-| `WPDCG_BASENAME` | `quickdemo-content-generator/quickdemo-content-generator.php` |
+| `WPDCG_BASENAME` | `loremix-demo-content-generator/loremix-demo-content-generator.php` |
 
 ---
 
@@ -279,7 +283,7 @@ Generates posts, pages, products, and any CPT. Called from the admin handler and
 
 `generate_standalone_image( string $title, int $index, string $batch_id ): int|false` — public method used by `WPDCG_Media_Generator`. Saves a GD image as a Media Library attachment with `post_parent = 0`. Stamps `META_KEY` and `BATCH_META_KEY` on the attachment.
 
-**AI content**: `WPDCG_AI_Generator` uses WordPress 7.0's `wp_ai_client_prompt()` abstraction. Credentials come from Settings → Connectors and may be provided by environment variables, PHP constants, or the connector database setting according to WordPress core. QuickDemo does not store provider API keys. Text generation asks for JSON items containing `title`, `excerpt`, and safe HTML `content`; the JSON schema uses `additionalProperties => false` for OpenAI strict structured-output compatibility. If AI is unavailable or parsing fails, generation falls back to built-in demo titles/content and records a warning. AI image generation uses `generate_image()`, applies a 120-second image-only request timeout, does not set temperature on image prompts, validates the returned image bytes, and saves the data URI to the Media Library as a plugin-tracked attachment. If AI image generation fails and the built-in placeholder image option is enabled, the placeholder image is used as a fallback. See `AI_CONTENT_GENERATION.md` before changing this flow.
+**AI content**: `WPDCG_AI_Generator` uses WordPress 7.0's `wp_ai_client_prompt()` abstraction. Credentials come from Settings → Connectors and may be provided by environment variables, PHP constants, or the connector database setting according to WordPress core. Loremix does not store provider API keys. Text generation asks for JSON items containing `title`, `excerpt`, and safe HTML `content`; the JSON schema uses `additionalProperties => false` for OpenAI strict structured-output compatibility. If AI is unavailable or parsing fails, generation falls back to built-in demo titles/content and records a warning. AI image generation uses `generate_image()`, applies a 120-second image-only request timeout, does not set temperature on image prompts, validates the returned image bytes, and saves the data URI to the Media Library as a plugin-tracked attachment. If AI image generation fails and the built-in placeholder image option is enabled, the placeholder image is used as a fallback. See `AI_CONTENT_GENERATION.md` before changing this flow.
 
 **`WPDCG_AI_Generator::generate_standalone_image( string $topic, string $title, int $index, string $batch_id )`** — public method for generating a standalone AI image to the Media Library (no parent post, no post thumbnail). Returns attachment ID or `WP_Error`. Used by `WPDCG_Media_Generator`. Calls `save_data_uri_as_attachment()` with `$post_id = 0` which skips `set_post_thumbnail()` and uses the provided `$batch_id` directly for meta rather than reading from parent post meta.
 
@@ -354,7 +358,7 @@ Uses `wc_create_order()`. Sets billing + shipping address, adds demo products as
 7. Calls `WPDCG_Tracker::clear()`
 
 **`delete_batch( $batch_id )`** — routes by batch type prefix:
-- Default (no `_` prefix) or `_media` → `delete_batch_posts()` — WP_Query requiring generated meta, `BATCH_META_KEY`, and the QuickDemo source marker (handles both posts and Media Library attachments since both are WP posts)
+- Default (no `_` prefix) or `_media` → `delete_batch_posts()` — WP_Query requiring generated meta, `BATCH_META_KEY`, and the Loremix source marker (handles both posts and Media Library attachments since both are WP posts)
 - `_comment` / `_wc_review` → `delete_batch_comments()` — DB query on comment meta
 - `_user` → `delete_batch_users()` — DB query on user meta
 - `_wc_order` → `delete_batch_orders()` — WC order delete
@@ -363,7 +367,7 @@ Uses `wc_create_order()`. Sets billing + shipping address, adds demo products as
 ---
 
 ### WPDCG_Admin
-Registers the admin page as a top-level **QuickDemo** menu item. All form submissions use either `admin_post_*` actions (non-JS fallback) or the single AJAX dispatcher `wp_ajax_wpdcg_ajax_generate`.
+Registers the admin page as a top-level **Loremix** menu item. All form submissions use either `admin_post_*` actions (non-JS fallback) or the single AJAX dispatcher `wp_ajax_wpdcg_ajax_generate`.
 
 All generation logic is extracted into private `do_*` methods so both the admin_post handlers and the AJAX dispatcher can call the same code without duplication.
 
@@ -490,33 +494,33 @@ Calls `WPDCG_Tracker::add_batch( $batch_id, '_menu', [ $menu_id ] )`.
 ---
 
 ### WP-CLI (WPDCG_CLI)
-Command: `wp quickdemo`
+Command: `wp loremix`
 
 ```bash
 # Generate 20 draft posts with featured images across a date range
-wp quickdemo generate --count=20 --post_type=post --status=draft \
+wp loremix generate --count=20 --post_type=post --status=draft \
   --featured-image --date-from=2025-01-01 --date-to=2025-12-31
 
 # Generate AI-written posts for a client topic
-wp quickdemo generate --count=5 --ai-topic="family dental clinic in Austin" --ai-tone=friendly --ai-image
+wp loremix generate --count=5 --ai-topic="family dental clinic in Austin" --ai-tone=friendly --ai-image
 
 # Generate complete variable WooCommerce products with attributes and variations
-wp quickdemo generate --post_type=product --product-type=variable --count=3
+wp loremix generate --post_type=product --product-type=variable --count=3
 
 # Delete a specific batch
-wp quickdemo delete --batch=batch_20260101_120000_abc123
+wp loremix delete --batch=batch_20260101_120000_abc123
 
 # Generate comments, users, WooCommerce reviews, and WooCommerce orders
-wp quickdemo generate-comments --per-post=5 --attach-to=latest_batch
-wp quickdemo generate-users --count=10 --role=author
-wp quickdemo generate-reviews --per-product=4
-wp quickdemo generate-orders --count=10 --status=processing
+wp loremix generate-comments --per-post=5 --attach-to=latest_batch
+wp loremix generate-users --count=10 --role=author
+wp loremix generate-reviews --per-product=4
+wp loremix generate-orders --count=10 --status=processing
 
 # Delete everything
-wp quickdemo delete --all
+wp loremix delete --all
 
 # List all batches
-wp quickdemo list
+wp loremix list
 ```
 
 CLI generation covers posts, comments, users, WooCommerce reviews, and WooCommerce orders.
@@ -525,7 +529,7 @@ CLI generation covers posts, comments, users, WooCommerce reviews, and WooCommer
 
 ## Key Design Decisions
 
-**Cleanup safety**: Generated posts/attachments/variations carry the legacy generated flag, a batch ID, and the QuickDemo-specific source marker (`_wpdcg_source = quickdemo-content-generator`). Comments, users, reviews, and orders also receive the source marker alongside their generated/batch meta. Delete-all requires the QuickDemo source marker; old tracked batches are backfilled before cleanup so dev data remains removable without widening delete-all to arbitrary items with only a generic generated meta key.
+**Cleanup safety**: Generated posts/attachments/variations carry the legacy generated flag, a batch ID, and the Loremix-specific source marker (`_wpdcg_source = loremix-demo-content-generator`). Comments, users, reviews, and orders also receive the source marker alongside their generated/batch meta. Delete-all requires the Loremix source marker; old tracked batches are backfilled before cleanup so dev data remains removable without widening delete-all to arbitrary items with only a generic generated meta key.
 
 **Product type is WooCommerce, not Posts**: `product` is excluded from the Posts tab dropdown. All WooCommerce content (products, reviews, orders) lives in the WooCommerce tab to match how users think about their shop.
 
@@ -533,7 +537,7 @@ CLI generation covers posts, comments, users, WooCommerce reviews, and WooCommer
 
 **Auto-terms idempotency**: `wp_insert_term()` returns a `term_exists` error code with the existing term's ID when the term already exists. This lets the generator reuse terms like "Uncategorized" without stamping them as auto-generated and thus without deleting them during cleanup.
 
-**Batch type routing**: The `_` prefix convention on non-post batch types (`_comment`, `_user`, `_wc_review`, `_wc_order`, `_menu`, `_media`) lets `WPDCG_Cleaner::delete_batch()` route to the correct cleanup method without storing additional type metadata. `_media` is a special case: media attachments are WordPress posts, so they fall through to the default `delete_batch_posts()` path with generated, batch, and QuickDemo source-marker checks.
+**Batch type routing**: The `_` prefix convention on non-post batch types (`_comment`, `_user`, `_wc_review`, `_wc_order`, `_menu`, `_media`) lets `WPDCG_Cleaner::delete_batch()` route to the correct cleanup method without storing additional type metadata. `_media` is a special case: media attachments are WordPress posts, so they fall through to the default `delete_batch_posts()` path with generated, batch, and Loremix source-marker checks.
 
 **GD code shared between posts and media**: `create_gd_image_file()` is the single private method that does all GD drawing and file saving. Both `generate_featured_image()` (post thumbnail) and `generate_standalone_image()` (Media Library only) call it with different slugs. This avoids ~150 lines of duplication.
 
@@ -610,7 +614,7 @@ Four new features added in a single session (custom fields were added then remov
 
 **New CSS**: `.wpdcg-progress`, `.wpdcg-progress__bar`, `.wpdcg-presets-bar` and children
 
-**Files changed**: `class-wpdcg-presets.php` (new), `class-wpdcg-media-generator.php` (new), `class-wpdcg-menu-generator.php` (new), `quickdemo-content-generator.php` (requires), `uninstall.php` (2 new option deletes), `class-wpdcg-generator.php` (standalone image, GD refactor), `class-wpdcg-cleaner.php` (menu deletion, _menu routing), `class-wpdcg-admin.php` (rewrite), `admin/views/admin-page.php` (Extras tab, presets bar, progress bars), `admin/js/wpdcg-admin.js` (rewrite), `admin/css/wpdcg-admin.css` (new component styles)
+**Files changed**: `class-wpdcg-presets.php` (new), `class-wpdcg-media-generator.php` (new), `class-wpdcg-menu-generator.php` (new), `loremix-demo-content-generator.php` (requires), `uninstall.php` (2 new option deletes), `class-wpdcg-generator.php` (standalone image, GD refactor), `class-wpdcg-cleaner.php` (menu deletion, _menu routing), `class-wpdcg-admin.php` (rewrite), `admin/views/admin-page.php` (Extras tab, presets bar, progress bars), `admin/js/wpdcg-admin.js` (rewrite), `admin/css/wpdcg-admin.css` (new component styles)
 
 ---
 
@@ -679,14 +683,14 @@ Added topic-based AI image generation to the Extras tab Media Images card.
 
 - Generated variable products had correct `_product_attributes` meta and child `product_variation` posts, but WooCommerce's Attributes/Variations panels could appear blank with the active `attribute-thumbnail-for-woocommerce` plugin.
 - Root cause: that plugin registers `WcAttributeThumbnail\AttributeFrontend::prepend_attribute_image()` on `woocommerce_attribute_label` with the third argument type-hinted as `array`; WooCommerce passes a `WC_Product` object when loading admin product attributes/variations, so PHP throws a `TypeError` before the callback's `is_admin()` guard can run.
-- Added `WPDCG_Core::remove_incompatible_admin_attribute_filters()` on `admin_init` to remove that frontend-only callback in wp-admin/admin-ajax. This preserves storefront behavior while keeping QuickDemo-generated variable products editable in WooCommerce admin.
+- Added `WPDCG_Core::remove_incompatible_admin_attribute_filters()` on `admin_init` to remove that frontend-only callback in wp-admin/admin-ajax. This preserves storefront behavior while keeping Loremix-generated variable products editable in WooCommerce admin.
 
 ---
 
 ### 2026-05-24 — Variable product stock status fix
 
 - Variable products were generated with child variations marked `_stock_status = instock`, but the variable parent could still show `outofstock`.
-- Root cause: QuickDemo creates variation posts/meta directly to avoid the `attribute-thumbnail-for-woocommerce` TypeError, but WooCommerce parent stock sync reads child stock from `wc_product_meta_lookup`, not only post meta. The lookup rows were stale/missing, so `WC_Product_Variable::sync()` thought no child was in stock.
+- Root cause: Loremix creates variation posts/meta directly to avoid the `attribute-thumbnail-for-woocommerce` TypeError, but WooCommerce parent stock sync reads child stock from `wc_product_meta_lookup`, not only post meta. The lookup rows were stale/missing, so `WC_Product_Variable::sync()` thought no child was in stock.
 - Added `WPDCG_Generator::sync_variation_stock_status()` after each variation is created. It removes the known incompatible attribute-label filter if present, then calls `wc_update_product_stock_status( $variation_id, 'instock' )` so WooCommerce saves stock status and updates lookup data before parent sync.
 - Verification: a generated published variable product reported parent `stock=instock`, `in_stock=1`, `child_is_in_stock=1`, 4 visible children, and all child variations `instock`.
 
@@ -694,7 +698,7 @@ Added topic-based AI image generation to the Extras tab Media Images card.
 
 ### 2026-05-24 — Variation image generation
 
-- When the WooCommerce Products form has `wpdcg_featured_image_generate` checked and Product Type is `variable`, QuickDemo now creates a built-in GD placeholder image for each generated variation.
+- When the WooCommerce Products form has `wpdcg_featured_image_generate` checked and Product Type is `variable`, Loremix now creates a built-in GD placeholder image for each generated variation.
 - New helper: `WPDCG_Generator::generate_variation_image( $parent_id, $variation_id, $title, $index )`.
 - Variation image attachments are parented to the product, stamped with `META_KEY` and `BATCH_META_KEY`, and assigned to the variation via `_thumbnail_id`.
 - The parent product image behavior is unchanged: AI image is attempted first when enabled; built-in placeholder image is used as fallback or when AI images are not enabled.
@@ -703,7 +707,7 @@ Added topic-based AI image generation to the Extras tab Media Images card.
 
 ### 2026-05-24 — Product gallery image generation
 
-- When the WooCommerce Products form has `wpdcg_featured_image_generate` checked, QuickDemo now generates three built-in GD placeholder images for the WooCommerce product gallery.
+- When the WooCommerce Products form has `wpdcg_featured_image_generate` checked, Loremix now generates three built-in GD placeholder images for the WooCommerce product gallery.
 - New helper: `WPDCG_Generator::generate_product_gallery_images( $post_id, $title, $index )`.
 - Gallery image attachment IDs are stored in `_product_image_gallery` as a comma-separated list.
 - Gallery image attachments are parented to the product and stamped with `META_KEY` and `BATCH_META_KEY`, so per-batch and delete-all cleanup removes them.
@@ -724,7 +728,7 @@ Added topic-based AI image generation to the Extras tab Media Images card.
 
 ### 2026-05-24 — Comments empty-state guard
 
-- Comments tab now checks for at least one generated QuickDemo post target before enabling comment generation.
+- Comments tab now checks for at least one generated Loremix post target before enabling comment generation.
 - If no generated targets exist, the form shows an inline warning, disables comment fields and the Generate button, and offers a **Go to Posts** shortcut.
 - New CSS: `.wpdcg-inline-notice` and `.wpdcg-inline-notice--warning`.
 
@@ -742,8 +746,8 @@ Added topic-based AI image generation to the Extras tab Media Images card.
 
 ### 2026-05-24 — Release security hardening
 
-- Added `WPDCG_Generator::SOURCE_META_KEY` / `SOURCE_VALUE` and `stamp_generated_post()` so generated posts, attachments, and variations receive a QuickDemo-specific ownership marker in addition to legacy generated and batch meta. Comments, users, reviews, and orders now receive the same source marker in their own meta stores.
-- Delete-all now requires the QuickDemo source marker for post-like content. `WPDCG_Cleaner::backfill_source_meta_from_tracker()` marks previously tracked batches before deletion so existing dev data remains removable.
+- Added `WPDCG_Generator::SOURCE_META_KEY` / `SOURCE_VALUE` and `stamp_generated_post()` so generated posts, attachments, and variations receive a Loremix-specific ownership marker in addition to legacy generated and batch meta. Comments, users, reviews, and orders now receive the same source marker in their own meta stores.
+- Delete-all now requires the Loremix source marker for post-like content. `WPDCG_Cleaner::backfill_source_meta_from_tracker()` marks previously tracked batches before deletion so existing dev data remains removable.
 - Batch post deletion now requires both generated meta and the requested batch meta.
 - AI image saves now enforce a 10 MB limit, verify actual image bytes with `getimagesizefromstring()`, allow only JPEG/PNG/WebP, run `wp_check_filetype_and_ext()`, and delete the file if attachment insertion fails.
 - Removed the PHP 8 union return type from `WPDCG_AI_Generator::generate_standalone_image()` so the file remains parseable under the declared PHP 7.4 requirement.
@@ -766,26 +770,26 @@ Added topic-based AI image generation to the Extras tab Media Images card.
 - Added `phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound` at top of `admin/views/admin-page.php` — false positives, file is a view template included inside a class method, variables are local scope.
 
 **New files created:**
-- `.gitignore` — excludes `.claude/` and `quickdemo-content-generator-*.md` report files from git
+- `.gitignore` — excludes `.claude/` and `loremix-demo-content-generator-*.md` report files from git
 - `.distignore` — WordPress.org standard; excludes `.git`, `.gitignore`, `.distignore`, `.claude`, `CLAUDE.md`, `AI_CONTENT_GENERATION.md`, and report `.md` files from distribution zip
 
 **GitHub:**
-- Old remote (`wp-demo-content-generator`) removed; new remote set to `https://github.com/mosharafmanu/wp-quickdemo-content-generator`
+- Old remote (`wp-demo-content-generator`) removed; new remote set to `https://github.com/mosharafmanu/wp-loremix-demo-content-generator`
 - Plugin URI in plugin header updated to match
 - All changes committed and pushed; latest commit on `main`
 
 **WordPress.org submission:**
 - Cannot submit as new plugin while old `demo-content-generator` review is pending
-- Uploaded `quickdemo-content-generator.zip` via "Upload updated plugin for review" on existing ticket
-- Requested slug change from `demo-content-generator` → `quickdemo-content-generator` via email reply to `plugins@wordpress.org`
+- Uploaded `loremix-demo-content-generator.zip` via "Upload updated plugin for review" on existing ticket
+- Requested slug change from `demo-content-generator` → `loremix-demo-content-generator` via email reply to `plugins@wordpress.org`
 - **Status: waiting for WordPress.org team response**
 - TextDomainMismatch errors in Plugin Check are expected and will resolve automatically once WP.org updates the slug — no code change needed
 
-**Clean zip location:** `/tmp/quickdemo-content-generator.zip` (274 KB). Rebuild command if needed:
+**Clean zip location:** `/tmp/loremix-demo-content-generator.zip` (274 KB). Rebuild command if needed:
 ```bash
 cd /Applications/AMPPS/www/ClientProjects/WordPress/2026/plugins-dev/wp-content/plugins
-zip -r /tmp/quickdemo-content-generator.zip quickdemo-content-generator \
+zip -r /tmp/loremix-demo-content-generator.zip loremix-demo-content-generator \
   --exclude "*.git*" --exclude "*/CLAUDE.md" --exclude "*/AI_CONTENT_GENERATION.md" \
-  --exclude "*/.claude/*" --exclude "*/quickdemo-content-generator-*.md" \
+  --exclude "*/.claude/*" --exclude "*/loremix-demo-content-generator-*.md" \
   --exclude "*/.distignore" --exclude "*/.gitignore"
 ```
