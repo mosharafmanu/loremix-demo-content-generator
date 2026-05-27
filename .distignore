@@ -9,5 +9,8 @@
 CLAUDE.md
 AI_CONTENT_GENERATION.md
 
+# macOS metadata
+.DS_Store
+
 # Plugin Check tool report files
-quickdemo-content-generator-*.md
+loremix-demo-content-generator-*.md
