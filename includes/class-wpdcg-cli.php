@@ -57,6 +57,12 @@ class WPDCG_CLI {
 	 * [--ai-image]
 	 * : Generate topic-based featured images using a configured WordPress AI connector.
 	 *
+	 * [--content-images]
+	 * : Inject placeholder images into the post content body.
+	 *
+	 * [--content-image-count=<number>]
+	 * : Number of images to inject per post. Default 1. Range: 1-3.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp loremix generate --count=20 --post_type=post --status=draft
@@ -79,7 +85,9 @@ class WPDCG_CLI {
 		$ai_topic       = \WP_CLI\Utils\get_flag_value( $assoc_args, 'ai-topic', '' );
 		$ai_tone        = \WP_CLI\Utils\get_flag_value( $assoc_args, 'ai-tone', 'professional' );
 		$ai_audience    = \WP_CLI\Utils\get_flag_value( $assoc_args, 'ai-audience', '' );
-		$ai_image       = isset( $assoc_args['ai-image'] );
+		$ai_image            = isset( $assoc_args['ai-image'] );
+		$content_images      = isset( $assoc_args['content-images'] );
+		$content_image_count = max( 1, min( 3, (int) \WP_CLI\Utils\get_flag_value( $assoc_args, 'content-image-count', 1 ) ) );
 
 		if ( ! post_type_exists( $post_type ) ) {
 			WP_CLI::error( sprintf( 'Post type "%s" does not exist.', $post_type ) );
@@ -96,11 +104,13 @@ class WPDCG_CLI {
 			'product_type'    => sanitize_key( $product_type ),
 			'date_from'       => sanitize_text_field( $date_from ),
 			'date_to'         => sanitize_text_field( $date_to ),
-			'ai_enabled'      => '' !== $ai_topic,
-			'ai_topic'        => sanitize_text_field( $ai_topic ),
-			'ai_tone'         => sanitize_key( $ai_tone ),
-			'ai_audience'     => sanitize_text_field( $ai_audience ),
-			'ai_image'        => $ai_image,
+			'ai_enabled'          => '' !== $ai_topic,
+			'ai_topic'            => sanitize_text_field( $ai_topic ),
+			'ai_tone'             => sanitize_key( $ai_tone ),
+			'ai_audience'         => sanitize_text_field( $ai_audience ),
+			'ai_image'            => $ai_image,
+			'content_images'      => $content_images,
+			'content_image_count' => $content_image_count,
 		) );
 
 		if ( is_wp_error( $result ) ) {

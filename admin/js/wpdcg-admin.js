@@ -42,6 +42,11 @@
 			$( '#wpdcg-product-type-summary-detail' ).text( detail );
 		} ).trigger( 'change' );
 
+		// ── Content images count toggle ───────────────────────────────────────
+		$( '#wpdcg_content_images' ).on( 'change', function () {
+			$( '#wpdcg-content-images-wrap' ).toggle( this.checked );
+		} );
+
 		// ── Date range toggles ────────────────────────────────────────────────
 		$( '#wpdcg_date_toggle' ).on( 'change', function () {
 			$( '#wpdcg-date-wrap' ).toggle( this.checked );

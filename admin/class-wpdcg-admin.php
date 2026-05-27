@@ -547,7 +547,9 @@ class WPDCG_Admin {
 		$paragraph_count = max( 1, min( 8,   isset( $_POST['wpdcg_paragraph_count'] )  ? absint( $_POST['wpdcg_paragraph_count'] )  : 3 ) );
 		$excerpt_enabled = ! empty( $_POST['wpdcg_excerpt_enabled'] );
 		$excerpt_length  = max( 1, min( 500, isset( $_POST['wpdcg_excerpt_length'] )   ? absint( $_POST['wpdcg_excerpt_length'] )   : 30 ) );
-		$feat_enabled    = ! empty( $_POST['wpdcg_featured_image_generate'] );
+		$feat_enabled         = ! empty( $_POST['wpdcg_featured_image_generate'] );
+		$content_images       = ! empty( $_POST['wpdcg_content_images'] );
+		$content_image_count  = max( 1, min( 3, isset( $_POST['wpdcg_content_image_count'] ) ? absint( $_POST['wpdcg_content_image_count'] ) : 1 ) );
 		$product_type    = isset( $_POST['wpdcg_product_type'] )     ? sanitize_key( wp_unslash( $_POST['wpdcg_product_type'] ) )                 : '';
 		$auto_terms      = ! empty( $_POST['wpdcg_auto_terms'] );
 		$date_from       = isset( $_POST['wpdcg_date_from'] )        ? sanitize_text_field( wp_unslash( $_POST['wpdcg_date_from'] ) )             : '';
@@ -575,8 +577,10 @@ class WPDCG_Admin {
 			'paragraph_count' => $paragraph_count,
 			'excerpt_enabled' => $excerpt_enabled,
 			'excerpt_length'  => $excerpt_length,
-			'featured_image'  => $feat_enabled,
-			'product_type'    => $product_type,
+			'featured_image'      => $feat_enabled,
+			'content_images'      => $content_images,
+			'content_image_count' => $content_image_count,
+			'product_type'        => $product_type,
 			'auto_terms'      => $auto_terms,
 			'taxonomy_terms'  => $taxonomy_terms,
 			'date_from'       => $date_from,

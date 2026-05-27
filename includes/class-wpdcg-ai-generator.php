@@ -266,6 +266,38 @@ class WPDCG_AI_Generator {
 	}
 
 	/**
+	 * Generates an AI image to be embedded inside post content body.
+	 *
+	 * @param int    $post_id Post the image belongs to (used as attachment parent).
+	 * @param string $title   Post title — used in attachment title and prompt context.
+	 * @param string $topic   AI topic/subject (e.g. "family dental clinic in Austin").
+	 * @param int    $slot    1-based slot number within this post (1 = first image, 2 = second, etc.).
+	 * @param int    $index   Global 1-based index for colour-theme rotation fallback.
+	 * @return int|WP_Error Attachment ID on success or WP_Error on failure.
+	 */
+	public function generate_content_image( int $post_id, string $title, string $topic, int $slot, int $index = 1 ) {
+		$prompt = sprintf(
+			'Create a clean, professional content image for a blog post or page. Client topic: %1$s. Post title: %2$s. Content image number: %3$d. Show a relevant scene, concept illustration, or contextual photo that would naturally appear inside an article body. Style: editorial photography or clean illustration, landscape orientation, no text overlays, no watermarks, no logos.',
+			$topic,
+			$title,
+			$slot
+		);
+
+		return $this->generate_attached_image_from_prompt(
+			$post_id,
+			sprintf(
+				/* translators: 1: post title, 2: image slot number */
+				__( '%1$s — Content Image %2$d', 'loremix-demo-content-generator' ),
+				$title,
+				$slot
+			),
+			$prompt,
+			$index,
+			false
+		);
+	}
+
+	/**
 	 * Generates an AI image for a product variation thumbnail.
 	 *
 	 * @return int|WP_Error Attachment ID or error.

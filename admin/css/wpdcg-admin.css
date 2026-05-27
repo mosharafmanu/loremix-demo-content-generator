@@ -1,5 +1,5 @@
 /* =============================================================================
-   QuickDemo Content Generator — Admin Styles
+   Loremix Demo Content Generator — Admin Styles
    ============================================================================= */
 
 /* ── Page wrapper ──────────────────────────────────────────────────────────── */
@@ -725,4 +725,16 @@ button.wpdcg-card__head:focus {
 	.wpdcg-batch-table tbody td:last-child {
 		padding-bottom: 12px;
 	}
+}
+
+/* ── Content images ────────────────────────────────────────────────────────── */
+.wpdcg-select-sm {
+	height: 28px;
+	padding: 0 4px;
+	font-size: 13px;
+}
+
+/* Keep injected content images from breaking out of the editor column */
+.wpdcg-content-image {
+	max-width: 100%;
 }

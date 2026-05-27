@@ -435,6 +435,25 @@ $tab_url = function( string $tab ) use ( $active_tab ) {
 					<p class="wpdcg-field__hint"><?php esc_html_e( 'Creates a unique gradient image via PHP GD. If AI images are enabled, this is used only as a fallback when AI image generation fails.', 'loremix-demo-content-generator' ); ?></p>
 				</div>
 			</div>
+
+			<div class="wpdcg-field">
+				<div class="wpdcg-field__label"><?php esc_html_e( 'Content Images', 'loremix-demo-content-generator' ); ?></div>
+				<div class="wpdcg-field__input">
+					<label class="wpdcg-check">
+						<input type="checkbox" id="wpdcg_content_images" name="wpdcg_content_images" value="1">
+						<?php esc_html_e( 'Inject images inside the post content body', 'loremix-demo-content-generator' ); ?>
+					</label>
+					<div id="wpdcg-content-images-wrap" style="display:none;margin-top:8px;">
+						<label for="wpdcg_content_image_count" style="margin-right:6px;"><?php esc_html_e( 'Images per post:', 'loremix-demo-content-generator' ); ?></label>
+						<select id="wpdcg_content_image_count" name="wpdcg_content_image_count" class="wpdcg-select-sm">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+						</select>
+					</div>
+					<p class="wpdcg-field__hint"><?php esc_html_e( 'Generates GD placeholder images and embeds them as <figure> blocks at evenly-spaced positions in the content. Uses AI images when AI Content is enabled with a topic.', 'loremix-demo-content-generator' ); ?></p>
+				</div>
+			</div>
 		</div>
 
 <?php if ( ! empty( $taxonomies ) ) :

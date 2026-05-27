@@ -152,16 +152,18 @@ class WPDCG_Generator {
 	 *     @type int    $paragraph_count Paragraphs per post. Default 3.
 	 *     @type bool   $excerpt_enabled Whether to generate an excerpt. Default false.
 	 *     @type int    $excerpt_length  Word limit for excerpt. Default 30.
-	 *     @type bool   $featured_image  Auto-generate a placeholder image. Default false.
-	 *     @type string $product_type    WooCommerce product type for product posts. simple|variable.
-	 *     @type array  $taxonomy_terms  [ taxonomy_slug => [ term_id, … ] ].
-	 *     @type string $date_from       Earliest post date (YYYY-MM-DD). Empty = now.
-	 *     @type string $date_to         Latest post date (YYYY-MM-DD). Empty = now.
-	 *     @type bool   $ai_enabled      Whether to use AI-generated titles/content.
-	 *     @type string $ai_topic        Client/topic prompt for AI content.
-	 *     @type string $ai_tone         Tone for AI content.
-	 *     @type string $ai_audience     Target audience for AI content.
-	 *     @type bool   $ai_image        Whether to generate featured images with AI.
+	 *     @type bool   $featured_image       Auto-generate a placeholder featured image. Default false.
+	 *     @type bool   $content_images       Inject placeholder images into the post content body. Default false.
+	 *     @type int    $content_image_count  Number of images to inject into content. 1–3. Default 1.
+	 *     @type string $product_type         WooCommerce product type for product posts. simple|variable.
+	 *     @type array  $taxonomy_terms       [ taxonomy_slug => [ term_id, … ] ].
+	 *     @type string $date_from            Earliest post date (YYYY-MM-DD). Empty = now.
+	 *     @type string $date_to              Latest post date (YYYY-MM-DD). Empty = now.
+	 *     @type bool   $ai_enabled           Whether to use AI-generated titles/content.
+	 *     @type string $ai_topic             Client/topic prompt for AI content.
+	 *     @type string $ai_tone              Tone for AI content.
+	 *     @type string $ai_audience          Target audience for AI content.
+	 *     @type bool   $ai_image             Whether to generate featured/content images with AI.
 	 * }
 	 * @return array|WP_Error Array with 'created', 'errors', 'batch_id'; or WP_Error.
 	 */
@@ -176,17 +178,19 @@ class WPDCG_Generator {
 				'paragraph_count' => 3,
 				'excerpt_enabled' => false,
 				'excerpt_length'  => 30,
-				'featured_image'  => false,
-				'product_type'    => '',
-				'auto_terms'      => false,
-				'taxonomy_terms'  => array(),
-				'date_from'       => '',
-				'date_to'         => '',
-				'ai_enabled'      => false,
-				'ai_topic'        => '',
-				'ai_tone'         => 'professional',
-				'ai_audience'     => '',
-				'ai_image'        => false,
+				'featured_image'      => false,
+				'content_images'      => false,
+				'content_image_count' => 1,
+				'product_type'        => '',
+				'auto_terms'          => false,
+				'taxonomy_terms'      => array(),
+				'date_from'           => '',
+				'date_to'             => '',
+				'ai_enabled'          => false,
+				'ai_topic'            => '',
+				'ai_tone'             => 'professional',
+				'ai_audience'         => '',
+				'ai_image'            => false,
 			)
 		);
 
@@ -197,8 +201,10 @@ class WPDCG_Generator {
 		$paragraph_count = max( 1, absint( $args['paragraph_count'] ) );
 		$excerpt_enabled = (bool) $args['excerpt_enabled'];
 		$excerpt_length  = max( 1, absint( $args['excerpt_length'] ) );
-		$featured_image  = (bool) $args['featured_image'];
-		$product_type    = sanitize_key( $args['product_type'] );
+		$featured_image      = (bool) $args['featured_image'];
+		$content_images      = (bool) $args['content_images'];
+		$content_image_count = max( 1, min( 3, absint( $args['content_image_count'] ) ) );
+		$product_type        = sanitize_key( $args['product_type'] );
 		$auto_terms      = (bool) $args['auto_terms'];
 		$taxonomy_terms  = is_array( $args['taxonomy_terms'] ) ? $args['taxonomy_terms'] : array();
 		$date_from       = sanitize_text_field( $args['date_from'] );
@@ -319,6 +325,18 @@ class WPDCG_Generator {
 
 			if ( 'product' === $post_type && ( $featured_image || ( $ai_image && '' !== $ai_topic ) ) ) {
 				$this->generate_product_gallery_images( $post_id, $title, $i, $ai_image && '' !== $ai_topic, $ai_topic, $featured_image );
+			}
+
+			// Content body images — only for non-product post types.
+			if ( $content_images && 'product' !== $post_type ) {
+				$use_ai_ci  = $ai_image && '' !== $ai_topic;
+				$ci_att_ids = $this->generate_content_images( $post_id, $title, $content_image_count, $i, $use_ai_ci, $ai_topic );
+				if ( ! empty( $ci_att_ids ) ) {
+					wp_update_post( array(
+						'ID'           => $post_id,
+						'post_content' => $this->inject_images_into_content( $content, $ci_att_ids ),
+					) );
+				}
 			}
 
 			foreach ( $taxonomy_terms as $taxonomy => $term_ids ) {
@@ -1104,6 +1122,169 @@ class WPDCG_Generator {
 		}
 
 		return $gallery_ids;
+	}
+
+	/**
+	 * Generates 1–3 images and saves them as attachments parented to the post.
+	 * Uses AI when $ai_images is true and an AI connector is configured; falls
+	 * back to GD for each slot where AI fails or is not enabled.
+	 *
+	 * @param int    $post_id    Post ID to parent the attachments to.
+	 * @param string $title      Post title used in attachment titles and AI prompts.
+	 * @param int    $count      Number of images to generate (1–3).
+	 * @param int    $index      1-based loop counter driving colour-theme rotation.
+	 * @param bool   $ai_images  Whether to attempt AI generation.
+	 * @param string $ai_topic   AI topic/subject string.
+	 * @return int[] Array of attachment IDs (may be fewer than $count on partial failure).
+	 */
+	private function generate_content_images( int $post_id, string $title, int $count, int $index, bool $ai_images, string $ai_topic ): array {
+		$attachment_ids = array();
+
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		for ( $slot = 1; $slot <= $count; $slot++ ) {
+			// Use a high offset so colour themes differ from the featured/gallery images.
+			$img_index = ( $index * 10 ) + $slot + 100;
+
+			// Try AI first if enabled.
+			if ( $ai_images && '' !== $ai_topic && class_exists( 'WPDCG_AI_Generator' ) ) {
+				$att_id = ( new WPDCG_AI_Generator() )->generate_content_image( $post_id, $title, $ai_topic, $slot, $img_index );
+				if ( ! is_wp_error( $att_id ) ) {
+					$attachment_ids[] = absint( $att_id );
+					continue;
+				}
+			}
+
+			// GD fallback (or primary when AI is not enabled).
+			$slug = 'content-' . $post_id . '-' . $slot . '-' . substr( md5( $post_id . 'ci' . $slot ), 0, 6 );
+			$gd   = $this->create_gd_image_file( $img_index, $slug );
+			if ( ! $gd ) {
+				continue;
+			}
+
+			$att_id = wp_insert_attachment(
+				array(
+					'guid'           => $gd['url'],
+					'post_mime_type' => 'image/jpeg',
+					'post_title'     => sprintf(
+						/* translators: 1: post title, 2: image slot number */
+						__( '%1$s — Content Image %2$d', 'loremix-demo-content-generator' ),
+						$title,
+						$slot
+					),
+					'post_content'   => '',
+					'post_status'    => 'inherit',
+				),
+				$gd['filepath'],
+				$post_id
+			);
+
+			if ( is_wp_error( $att_id ) ) {
+				continue;
+			}
+
+			wp_update_attachment_metadata( absint( $att_id ), wp_generate_attachment_metadata( absint( $att_id ), $gd['filepath'] ) );
+			self::stamp_generated_post( absint( $att_id ), (string) get_post_meta( $post_id, self::BATCH_META_KEY, true ) );
+
+			$attachment_ids[] = absint( $att_id );
+		}
+
+		return $attachment_ids;
+	}
+
+	/**
+	 * Splits HTML post content at block-level closing tags and injects a
+	 * <figure> image block after each evenly-spaced position.
+	 *
+	 * @param string $content        Original post content HTML.
+	 * @param int[]  $attachment_ids Ordered list of attachment IDs to inject.
+	 * @return string Content with <figure> image blocks woven in.
+	 */
+	private function inject_images_into_content( string $content, array $attachment_ids ): string {
+		if ( empty( $attachment_ids ) || '' === trim( $content ) ) {
+			return $content;
+		}
+
+		// Split at closing block-level tags, keeping each tag as part of its block.
+		$parts = preg_split( '/((?:<\/(?:p|h[2-6]|ul|ol|blockquote|figure)>)\s*)/i', $content, -1, PREG_SPLIT_DELIM_CAPTURE );
+
+		if ( ! is_array( $parts ) || count( $parts ) < 3 ) {
+			// Content has no recognisable block structure — append images at the end.
+			return $content . $this->build_content_figures( $attachment_ids );
+		}
+
+		// Reassemble into complete blocks: text + closing tag pairs.
+		$blocks    = array();
+		$pair_end  = count( $parts ) - ( count( $parts ) % 2 === 1 ? 1 : 0 );
+		for ( $j = 0; $j + 1 < $pair_end; $j += 2 ) {
+			$blocks[] = $parts[ $j ] . $parts[ $j + 1 ];
+		}
+		$remainder   = ( count( $parts ) % 2 === 1 ) ? end( $parts ) : '';
+		$block_count = count( $blocks );
+		$img_count   = count( $attachment_ids );
+
+		if ( 0 === $block_count ) {
+			return $content . $this->build_content_figures( $attachment_ids );
+		}
+
+		// Calculate evenly-spaced insertion positions.
+		$interval  = max( 1, (int) floor( $block_count / ( $img_count + 1 ) ) );
+		$positions = array();
+		for ( $k = 1; $k <= $img_count; $k++ ) {
+			$positions[] = min( $interval * $k - 1, $block_count - 1 );
+		}
+		$positions = array_values( array_unique( $positions ) );
+
+		$result    = '';
+		$img_index = 0;
+		foreach ( $blocks as $idx => $block ) {
+			$result .= $block;
+			if ( in_array( $idx, $positions, true ) && isset( $attachment_ids[ $img_index ] ) ) {
+				$att_id   = absint( $attachment_ids[ $img_index ] );
+				$img_html = wp_get_attachment_image(
+					$att_id,
+					'large',
+					false,
+					array(
+						'class' => 'wp-image-' . $att_id,
+						'alt'   => '',
+					)
+				);
+				if ( $img_html ) {
+					$result .= '<figure class="wp-block-image size-large aligncenter wpdcg-content-image">' . $img_html . '</figure>' . "\n";
+				}
+				++$img_index;
+			}
+		}
+
+		return $result . $remainder;
+	}
+
+	/**
+	 * Renders a sequence of <figure> blocks from an array of attachment IDs.
+	 * Used as a fallback when content has no parseable block structure.
+	 *
+	 * @param int[] $attachment_ids Attachment IDs.
+	 * @return string HTML string of <figure> elements.
+	 */
+	private function build_content_figures( array $attachment_ids ): string {
+		$html = '';
+		foreach ( $attachment_ids as $att_id ) {
+			$att_id   = absint( $att_id );
+			$img_html = wp_get_attachment_image(
+				$att_id,
+				'large',
+				false,
+				array(
+					'class' => 'wp-image-' . $att_id,
+					'alt'   => '',
+				)
+			);
+			if ( $img_html ) {
+				$html .= '<figure class="wp-block-image size-large aligncenter wpdcg-content-image">' . $img_html . '</figure>' . "\n";
+			}
+		}
+		return $html;
 	}
 
 	/**
